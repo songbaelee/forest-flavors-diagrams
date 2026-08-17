@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Diagram 1a — build-up</title>
+<style>
+  body { margin: 0; background: #F8F8FA; font-family: Arial, Helvetica, sans-serif; }
+  #stage-wrap { cursor: pointer; width: 100%; max-width: 1304px; margin: 0 auto; }
+  .stage { transition: opacity 0.6s ease; }
+</style>
+</head>
+<body>
+<div id="stage-wrap" onclick="advance()">
+<svg width="100%" viewBox="0 90 1304 561" role="img">
+<title>Market segmentation and enabling conditions for agri-SME finance, built up in stages</title>
+<desc>An interactive step-by-step build of a chart showing financing need against number of enterprises across four bands, followed by enabling conditions and two Aceli mechanism badges. Click to advance through the stages.</desc>
+<defs>
+  <pattern id="hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <rect width="16" height="16" fill="#F1EFE8"/>
+    <line x1="0" y1="0" x2="0" y2="16" stroke="#D3D1C7" stroke-width="1.5"/>
+  </pattern>
+  <clipPath id="curveClip">
+    <path d="M152 132 L194 164 L258 207 L322 251 L386 296 L450 340 L514 377 L578 410 L642 438 L706 461 L770 480 L834 496 L898 508 L962 518 L1026 525 L1090 530 L1154 531 L1228 531 L152 531 Z"/>
+  </clipPath>
+  <marker id="arrowPurple" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M3 1L9 5L3 9" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<rect x="0" y="90" width="1304" height="561" fill="#F8F8FA"/>
+
+<g font-family="Arial, Helvetica, sans-serif">
+
+  <!-- STEP 1: axis and bands (empty coordinate system) -->
+  <g id="step-1" class="stage" style="opacity:1">
+    <line x1="152" y1="572" x2="1228" y2="572" stroke="#2C2C2A" stroke-width="1.2"/>
+    <path d="M1222 566 L1228 572 L1222 578" fill="none" stroke="#2C2C2A" stroke-width="1.2"/>
+    <line x1="152" y1="572" x2="152" y2="117" stroke="#2C2C2A" stroke-width="1.2"/>
+    <path d="M146 123 L152 117 L158 123" fill="none" stroke="#2C2C2A" stroke-width="1.2"/>
+    <g stroke="#5F5E5A" stroke-width="1" stroke-dasharray="10 8">
+      <line x1="152" y1="228" x2="1228" y2="228"/>
+      <line x1="152" y1="321" x2="1228" y2="321"/>
+      <line x1="152" y1="531" x2="1228" y2="531"/>
+    </g>
+    <text x="36" y="133" font-size="20" fill="#2C2C2A">Financing</text>
+    <text x="36" y="157" font-size="20" fill="#2C2C2A">need</text>
+    <text x="86" y="234" font-size="17" font-weight="500" fill="#2C2C2A">$10m</text>
+    <text x="94" y="327" font-size="17" font-weight="500" fill="#2C2C2A">$2m</text>
+    <text x="92" y="536" font-size="17" font-weight="500" fill="#2C2C2A">$10k</text>
+    <text x="1019" y="608" font-size="19" fill="#2C2C2A">Number of enterprises</text>
+  </g>
+
+  <!-- STEP 2: Commercial -->
+  <g id="step-2" class="stage" style="opacity:0">
+    <g clip-path="url(#curveClip)">
+      <rect x="152" y="117" width="1076" height="111" fill="#E6F1FB"/>
+    </g>
+    <rect x="178" y="163" width="200" height="44" rx="4" fill="#fff" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="278" y="191" text-anchor="middle" font-size="18" font-weight="500" fill="#2C2C2A">Commercial</text>
+  </g>
+
+  <!-- STEP 3: Quasi-commercial -->
+  <g id="step-3" class="stage" style="opacity:0">
+    <g clip-path="url(#curveClip)">
+      <rect x="152" y="228" width="1076" height="93" fill="#EAF3DE"/>
+    </g>
+    <rect x="178" y="251" width="200" height="44" rx="4" fill="#fff" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="278" y="279" text-anchor="middle" font-size="18" font-weight="500" fill="#2C2C2A">Quasi-commercial</text>
+  </g>
+
+  <!-- STEP 4: Sub-commercial (the long tail) -->
+  <g id="step-4" class="stage" style="opacity:0">
+    <g clip-path="url(#curveClip)">
+      <rect x="152" y="321" width="1076" height="210" fill="#FAEEDA"/>
+    </g>
+    <rect x="178" y="403" width="200" height="44" rx="4" fill="#fff" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="278" y="431" text-anchor="middle" font-size="18" font-weight="500" fill="#2C2C2A">Sub-commercial</text>
+  </g>
+
+  <!-- STEP 5: Microfinance -->
+  <g id="step-5" class="stage" style="opacity:0">
+    <rect x="152" y="531" width="1076" height="41" fill="url(#hatch)"/>
+    <rect x="178" y="533" width="200" height="36" rx="4" fill="#fff" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="278" y="556" text-anchor="middle" font-size="18" font-weight="500" fill="#2C2C2A">Microfinance</text>
+  </g>
+
+  <!-- STEP 6: Functioning legal & regulatory environment -->
+  <g id="step-6" class="stage" style="opacity:0">
+    <line x1="509" y1="151" x2="509" y2="531" stroke="#534AB7" stroke-width="1.25" fill="none" marker-start="url(#arrowPurple)" marker-end="url(#arrowPurple)"/>
+    <rect x="425" y="182" width="168" height="79" rx="4" fill="#F8F8FA" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="509" y="207" text-anchor="middle" font-size="15" fill="#5F5E5A">Functioning</text>
+    <text x="509" y="229" text-anchor="middle" font-size="15" fill="#5F5E5A">legal &amp; regulatory</text>
+    <text x="509" y="251" text-anchor="middle" font-size="15" fill="#5F5E5A">environment</text>
+  </g>
+
+  <!-- STEP 7: Risk mitigants -->
+  <g id="step-7" class="stage" style="opacity:0">
+    <line x1="692" y1="229" x2="692" y2="531" stroke="#534AB7" stroke-width="1.25" fill="none" marker-end="url(#arrowPurple)"/>
+    <circle cx="601" cy="260" r="15" fill="#fff" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="601" y="265" text-anchor="middle" font-size="17" font-weight="500" fill="#5F5E5A">+</text>
+    <rect x="609" y="266" width="167" height="79" rx="4" fill="#F8F8FA" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="692" y="291" text-anchor="middle" font-size="15" fill="#5F5E5A">Risk mitigants</text>
+    <text x="692" y="313" text-anchor="middle" font-size="15" fill="#5F5E5A">(e.g. partial</text>
+    <text x="692" y="335" text-anchor="middle" font-size="15" fill="#5F5E5A">guarantees)</text>
+  </g>
+
+  <!-- STEP 8: Concessional capital -->
+  <g id="step-8" class="stage" style="opacity:0">
+    <line x1="875" y1="322" x2="875" y2="531" stroke="#534AB7" stroke-width="1.25" fill="none" marker-end="url(#arrowPurple)"/>
+    <circle cx="784" cy="325" r="15" fill="#fff" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="784" y="330" text-anchor="middle" font-size="17" font-weight="500" fill="#5F5E5A">+</text>
+    <rect x="791" y="346" width="168" height="94" rx="4" fill="#F8F8FA" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="875" y="388" text-anchor="middle" font-size="15" fill="#5F5E5A">Concessional</text>
+    <text x="875" y="410" text-anchor="middle" font-size="15" fill="#5F5E5A">capital</text>
+  </g>
+
+  <!-- STEP 9: Higher concessionality / incentives -->
+  <g id="step-9" class="stage" style="opacity:0">
+    <line x1="1059" y1="373" x2="1059" y2="531" stroke="#534AB7" stroke-width="1.25" fill="none" marker-end="url(#arrowPurple)"/>
+    <circle cx="967" cy="406" r="15" fill="#fff" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="967" y="411" text-anchor="middle" font-size="17" font-weight="500" fill="#5F5E5A">+</text>
+    <rect x="975" y="407" width="166" height="79" rx="4" fill="#F8F8FA" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="1058" y="434" text-anchor="middle" font-size="15" fill="#5F5E5A">Higher</text>
+    <text x="1058" y="456" text-anchor="middle" font-size="15" fill="#5F5E5A">concessionality</text>
+    <text x="1058" y="478" text-anchor="middle" font-size="15" fill="#5F5E5A">/ incentives</text>
+  </g>
+
+  <!-- STEP 10: Aceli incentive program badge (tags the Higher concessionality arrow) -->
+  <g id="step-10" class="stage" style="opacity:0">
+    <circle cx="1059" cy="373" r="5.5" fill="#D85A30"/>
+    <rect x="974" y="536" width="170" height="30" rx="15" fill="#F5C4B3"/>
+    <text x="1059" y="556" text-anchor="middle" font-size="13" font-weight="500" fill="#4A1B0C">Aceli incentive program</text>
+  </g>
+
+  <!-- STEP 11: Aceli wholesale fund badge (tags the Concessional capital arrow) -->
+  <g id="step-11" class="stage" style="opacity:0">
+    <circle cx="875" cy="322" r="5.5" fill="#D85A30"/>
+    <rect x="790" y="536" width="170" height="30" rx="15" fill="#F5C4B3"/>
+    <text x="875" y="556" text-anchor="middle" font-size="13" font-weight="500" fill="#4A1B0C">Aceli wholesale fund</text>
+  </g>
+
+  <text id="counter" x="1228" y="645" text-anchor="end" font-size="12" fill="#888780">Click to continue · 1 / 11</text>
+
+</g>
+</svg>
+</div>
+<script>
+  var step = 1;
+  var total = 11;
+  function advance() {
+    step++;
+    if (step > total) {
+      step = 1;
+      for (var i = 2; i <= total; i++) {
+        document.getElementById('step-' + i).style.opacity = 0;
+      }
+    } else {
+      document.getElementById('step-' + step).style.opacity = 1;
+    }
+    var label = (step === total) ? (step + ' / ' + total + ' · click to restart') : ('Click to continue · ' + step + ' / ' + total);
+    document.getElementById('counter').textContent = label;
+  }
+</script>
+</body>
+</html>
