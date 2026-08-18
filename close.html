@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forest Flavors — Close: I&amp;P and Aceli</title>
+<style>
+  :root{
+    --surface-1:#ffffff;
+    --surface-2:#f3f4f6;
+    --border:#e5e7eb;
+    --border-strong:#d1d5db;
+    --text-primary:#1f2937;
+    --text-secondary:#6b7280;
+    --radius:8px;
+    --arrow:#6b7280;
+  }
+  body{
+    margin:0;
+    padding:32px 16px;
+    background:var(--surface-2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text-primary);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+  }
+  .card{
+    background:var(--surface-1);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:24px;
+    max-width:760px;
+    width:100%;
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
+    box-sizing:border-box;
+  }
+  h1{font-size:16px;font-weight:600;margin:0 0 4px;}
+  p.caption{font-size:13px;color:var(--text-secondary);margin:0 0 16px;}
+
+  rect{stroke-width:0.5;}
+  .th{font-size:14px;font-weight:600;fill:var(--text-primary);}
+  .ts{font-size:12px;fill:var(--text-secondary);}
+  .arr{stroke:var(--arrow);stroke-width:1.5;fill:none;}
+
+  .box{fill:var(--surface-1);stroke:var(--border-strong);}
+  .c-coral rect{fill:#fdece5;stroke:#f97316;}
+  .c-coral .th{fill:#c2410c;}
+  .c-teal rect{fill:#e6f7f0;stroke:#10b981;}
+  .c-teal .th{fill:#047857;}
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+    gap:12px;
+  }
+  .stat{
+    background:var(--surface-2);
+    border-radius:var(--radius);
+    padding:16px;
+  }
+  .stat p.label{font-size:13px;color:var(--text-secondary);margin:0 0 4px;}
+  .stat p.value{font-size:24px;font-weight:600;margin:0;}
+
+  ul.activities{margin:0;padding-left:20px;}
+  ul.activities li{font-size:14px;line-height:1.7;margin-bottom:8px;}
+  p.benefit{
+    font-size:14px;
+    line-height:1.7;
+    margin:16px 0 0;
+    padding-top:16px;
+    border-top:1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Who decides: I&amp;P vs. Aceli</h1>
+  <p class="caption">Forest Flavors, CRS Innovative Finance</p>
+
+  <svg width="100%" viewBox="0 0 680 354" role="img">
+  <title>Two parallel capital paths from CRS to SMEs, comparing who makes the credit decision</title>
+  <desc>CRS Social Ventures Fund splits into two paths. Left: I&amp;P mandate, then a CRS-directed credit decision, ending at SME. Right: AMC wholesale fund, then a bank-directed credit decision, ending at SME.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+  <g class="box">
+  <rect x="210" y="30" width="260" height="44" rx="8"/>
+  <text class="th" x="340" y="52" text-anchor="middle" dominant-baseline="central">CRS Social Ventures Fund</text>
+  </g>
+
+  <path d="M340 74L340 92L170 92L170 110" class="arr" marker-end="url(#arrow)"/>
+  <path d="M340 74L340 92L510 92L510 110" class="arr" marker-end="url(#arrow)"/>
+
+  <g class="box">
+  <rect x="60" y="110" width="220" height="56" rx="8"/>
+  <text class="th" x="170" y="130" text-anchor="middle" dominant-baseline="central">I&amp;P mandate</text>
+  <text class="ts" x="170" y="150" text-anchor="middle" dominant-baseline="central">Directs CRS lending</text>
+  </g>
+  <g class="box">
+  <rect x="400" y="110" width="220" height="56" rx="8"/>
+  <text class="th" x="510" y="130" text-anchor="middle" dominant-baseline="central">AMC wholesale fund</text>
+  <text class="ts" x="510" y="150" text-anchor="middle" dominant-baseline="central">Loans capital to banks</text>
+  </g>
+
+  <line x1="170" y1="166" x2="170" y2="190" class="arr" marker-end="url(#arrow)"/>
+  <line x1="510" y1="166" x2="510" y2="190" class="arr" marker-end="url(#arrow)"/>
+
+  <g class="c-coral">
+  <rect x="60" y="190" width="220" height="56" rx="8"/>
+  <text class="th" x="170" y="210" text-anchor="middle" dominant-baseline="central">CRS-directed decision</text>
+  <text class="ts" x="170" y="230" text-anchor="middle" dominant-baseline="central">CRS selects the borrower</text>
+  </g>
+  <g class="c-teal">
+  <rect x="400" y="190" width="220" height="56" rx="8"/>
+  <text class="th" x="510" y="210" text-anchor="middle" dominant-baseline="central">Bank-directed decision</text>
+  <text class="ts" x="510" y="230" text-anchor="middle" dominant-baseline="central">Bank selects the borrower</text>
+  </g>
+
+  <line x1="170" y1="246" x2="170" y2="270" class="arr" marker-end="url(#arrow)"/>
+  <line x1="510" y1="246" x2="510" y2="270" class="arr" marker-end="url(#arrow)"/>
+
+  <g class="box">
+  <rect x="100" y="270" width="140" height="44" rx="8"/>
+  <text class="th" x="170" y="292" text-anchor="middle" dominant-baseline="central">SME</text>
+  </g>
+  <g class="box">
+  <rect x="440" y="270" width="140" height="44" rx="8"/>
+  <text class="th" x="510" y="292" text-anchor="middle" dominant-baseline="central">SME</text>
+  </g>
+  </svg>
+</div>
+
+<div class="card">
+  <h1>Early evidence: CRS and Aceli already overlap</h1>
+  <p class="caption">No active coordination between CRS and Aceli to date</p>
+  <div class="stats">
+    <div class="stat">
+      <p class="label">Known CRS SMEs already financed via Aceli</p>
+      <p class="value">4 of 19</p>
+    </div>
+    <div class="stat">
+      <p class="label">Financed through Aceli lending partners</p>
+      <p class="value">$1,080,200</p>
+    </div>
+    <div class="stat">
+      <p class="label">Active matching between CRS and Aceli</p>
+      <p class="value">None yet</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h1>What active matching could look like</h1>
+  <p class="caption">If CRS invests in the Aceli wholesale facility</p>
+  <ul class="activities">
+    <li>Refer SMEs CRS already works with to Aceli's lending partners &mdash; either for pre-investment technical assistance or directly for loan financing.</li>
+    <li>Ask Aceli's bank partners for referrals of SMEs that may need CRS's technical assistance, so lender-identified enterprises feed CRS's pipeline in both directions.</li>
+  </ul>
+  <p class="benefit">Participating in the fund also raises CRS's profile as a catalytic impact investor, making CRS more competitive in future grant applications.</p>
+</div>
+
+</body>
+</html>
