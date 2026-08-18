@@ -3,25 +3,45 @@
 <head>
 <meta charset="utf-8">
 <style>
-  /* Placeholder design-system vars for preview only — real deck defines these elsewhere */
+  /* Design-system vars matched to diagram8.html / diagram1a.html for visual consistency */
   :root {
-    --t: #333;
-    --radius: 6px;
-    --border: #ccc;
-    --border-strong: #999;
-    --surface-1: #f5f5f5;
-    --surface-2: #e2e2e2;
-    --text-primary: #222;
-    --text-secondary: #666;
-    --text-accent: #2a6f6f;
+    --surface-1: #ffffff;
+    --surface-2: #f3f4f6;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --radius: 8px;
+    --arrow: #6b7280;
   }
-  body { font-family: -apple-system, Segoe UI, sans-serif; background: #fff; padding: 24px; }
+  body {
+    margin: 0;
+    padding: 32px 16px;
+    background: var(--surface-2);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 760px;
+    width: 100%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  rect { stroke-width: 0.5; }
   .th { font-size: 14px; font-weight: 600; fill: var(--text-primary); }
-  .ts { font-size: 11px; fill: #555; }
-  .c-gray rect { fill: #f0f0f0; stroke: #aaa; }
-  .c-teal rect { fill: #e6f3f3; stroke: #2a6f6f; }
-  .c-purple rect { fill: #f2eefb; stroke: #7a5fc4; }
-  .arr { stroke: var(--t); stroke-width: 1; }
+  .ts { font-size: 12px; fill: var(--text-secondary); }
+  .arr { stroke: var(--arrow); stroke-width: 1; fill: none; }
+  .c-gray rect { fill: var(--surface-2); stroke: var(--border-strong); }
+  .c-teal rect { fill: #e6f7f0; stroke: #10b981; }
+  .c-teal .th { fill: #047857; }
+  .c-purple rect { fill: #f1edfc; stroke: #8b5cf6; }
+  .c-purple .th { fill: #6d28d9; }
 </style>
 </head>
 <body>
@@ -44,13 +64,14 @@
 
 .case-title { font-size: 17px; font-weight: 700; fill: var(--text-primary); }
 .th-sm { font-size: 11.5px; font-weight: 600; fill: var(--text-primary); }
-.ts-sm { font-size: 9.5px; fill: #555; }
+.ts-sm { font-size: 9.5px; fill: var(--text-secondary); }
 .th-md { font-size: 13px; font-weight: 600; fill: var(--text-primary); }
-.ts-md { font-size: 10.5px; fill: #555; }
+.ts-md { font-size: 10.5px; fill: var(--text-secondary); }
 
 .statebtn { padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary); font-size: 13px; font-weight: 400; cursor: pointer; }
 .statebtn.active { border: 1px solid var(--border-strong); background: var(--surface-2); color: var(--text-primary); font-weight: 500; }
 </style>
+<div class="card">
 <h2 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">A diagram that switches between the Mercy Corps, Ground Up Investing / Corus, One Acre Ventures, and Heifer Impact Capital structures</h2>
 
 <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
@@ -89,13 +110,13 @@
 <text class="ts d-el" x="300" y="110" text-anchor="middle" dominant-baseline="central">Seed foundation recalled the line</text>
 </g>
 
-<line class="connector1" x1="300" y1="140" x2="300" y2="190" stroke="var(--t)" stroke-width="0.75" marker-end="url(#arrow)"/>
+<line class="connector1" x1="300" y1="140" x2="300" y2="190" stroke="var(--arrow)" stroke-width="0.75" marker-end="url(#arrow)"/>
 <text class="ts b-el" x="345" y="165">founded</text>
 <text class="ts c-el" x="345" y="165">founded</text>
 <text class="ts d-el" x="345" y="165">founded</text>
 
 <g class="origin b-el">
-<path d="M170 140 C90 190, 70 300, 200 340" fill="none" stroke="var(--t)" stroke-width="1.2" marker-end="url(#arrow)"/>
+<path d="M170 140 C90 190, 70 300, 200 340" fill="none" stroke="var(--arrow)" stroke-width="1.2" marker-end="url(#arrow)"/>
 <text class="ts" x="10" y="310">~50% of</text>
 <text class="ts" x="10" y="326">origination</text>
 </g>
@@ -133,10 +154,10 @@
 </g>
 
 <g class="a-el">
-<path d="M440 90 L555 90 L555 195" fill="none" stroke="var(--t)" stroke-width="1" marker-end="url(#arrow)"/>
-<path d="M470 235 L455 235 L455 175 L227.5 175" fill="none" stroke="var(--t)" stroke-width="0.75"/>
-<line x1="372.5" y1="175" x2="372.5" y2="190" stroke="var(--t)" stroke-width="0.75" marker-end="url(#arrow)"/>
-<line x1="227.5" y1="175" x2="227.5" y2="190" stroke="var(--t)" stroke-width="0.75" marker-end="url(#arrow)"/>
+<path d="M440 90 L555 90 L555 195" fill="none" stroke="var(--arrow)" stroke-width="1" marker-end="url(#arrow)"/>
+<path d="M470 235 L455 235 L455 175 L227.5 175" fill="none" stroke="var(--arrow)" stroke-width="0.75"/>
+<line x1="372.5" y1="175" x2="372.5" y2="190" stroke="var(--arrow)" stroke-width="0.75" marker-end="url(#arrow)"/>
+<line x1="227.5" y1="175" x2="227.5" y2="190" stroke="var(--arrow)" stroke-width="0.75" marker-end="url(#arrow)"/>
 <g class="c-teal">
 <rect x="470" y="195" width="170" height="80" rx="10" stroke-width="0.5"/>
 <text class="th-md" x="555" y="222" text-anchor="middle" dominant-baseline="central">Mercy Corps Ventures</text>
@@ -145,7 +166,7 @@
 </g>
 
 <g class="b-el">
-<line x1="440" y1="225" x2="470" y2="225" stroke="var(--t)" stroke-width="0.5" stroke-dasharray="2 3" opacity="0.6"/>
+<line x1="440" y1="225" x2="470" y2="225" stroke="var(--arrow)" stroke-width="0.5" stroke-dasharray="2 3" opacity="0.6"/>
 <g class="c-purple">
 <rect x="470" y="195" width="150" height="65" rx="10" stroke-width="0.5" stroke-dasharray="3 3"/>
 <text class="th-sm" x="545" y="215" text-anchor="middle" dominant-baseline="central">1AV Fund phase</text>
@@ -174,6 +195,7 @@
 </g>
 </g>
 </svg>
+</div>
 </div>
 
 <script>
