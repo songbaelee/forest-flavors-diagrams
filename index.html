@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forest Flavors — Deck Contents</title>
+<style>
+  :root{
+    --surface-1:#ffffff;
+    --surface-2:#f3f4f6;
+    --border:#e5e7eb;
+    --border-strong:#d1d5db;
+    --text-primary:#1f2937;
+    --text-secondary:#6b7280;
+    --radius:8px;
+    --arrow:#6b7280;
+  }
+  body{
+    margin:0;
+    padding:32px 16px;
+    background:var(--surface-2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text-primary);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .card{
+    background:var(--surface-1);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:24px;
+    max-width:760px;
+    width:100%;
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
+    box-sizing:border-box;
+  }
+  h1{font-size:16px;font-weight:600;margin:0 0 4px;}
+  p.caption{font-size:13px;color:var(--text-secondary);margin:0 0 20px;}
+
+  .nav-list{display:flex;flex-direction:column;gap:10px;}
+  .nav-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 16px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    text-decoration:none;
+    color:inherit;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .nav-item:hover{
+    border-color:var(--border-strong);
+    background:var(--surface-2);
+  }
+  .nav-num{
+    flex:none;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:var(--surface-2);
+    border:1px solid var(--border-strong);
+    color:var(--text-primary);
+    font-size:12px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .nav-text{flex:1;min-width:0;}
+  .nav-title{font-size:14px;font-weight:500;color:var(--text-primary);}
+  .nav-desc{font-size:12px;color:var(--text-secondary);margin-top:2px;}
+  .nav-arrow{flex:none;color:var(--text-secondary);font-size:14px;}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Forest Flavors — deck contents</h1>
+  <p class="caption">CRS Innovative Finance &middot; five interactive diagrams and reference tables</p>
+
+  <div class="nav-list">
+    <a class="nav-item" href="diagram8.html">
+      <span class="nav-num">1</span>
+      <span class="nav-text">
+        <div class="nav-title">Impact chain</div>
+        <div class="nav-desc">Diagram 8 &mdash; baseline, SMEs, lending, and market-driven states</div>
+      </span>
+      <span class="nav-arrow">&rarr;</span>
+    </a>
+
+    <a class="nav-item" href="diagram1a.html">
+      <span class="nav-num">2</span>
+      <span class="nav-text">
+        <div class="nav-title">Market segmentation</div>
+        <div class="nav-desc">Diagram 1a &mdash; financing need vs. number of enterprises, built up in stages</div>
+      </span>
+      <span class="nav-arrow">&rarr;</span>
+    </a>
+
+    <a class="nav-item" href="ingo-strategy-profiles.html">
+      <span class="nav-num">3</span>
+      <span class="nav-text">
+        <div class="nav-title">INGO strategy profiles</div>
+        <div class="nav-desc">Mercy Corps, Ground Up Investing / Corus, One Acre Ventures, Heifer Impact Capital structures</div>
+      </span>
+      <span class="nav-arrow">&rarr;</span>
+    </a>
+
+    <a class="nav-item" href="close.html">
+      <span class="nav-num">4</span>
+      <span class="nav-text">
+        <div class="nav-title">Close: I&amp;P vs. Aceli</div>
+        <div class="nav-desc">Decision flow, overlap stats, and what active matching could look like</div>
+      </span>
+      <span class="nav-arrow">&rarr;</span>
+    </a>
+
+    <a class="nav-item" href="ingo-portfolio-comparison.html">
+      <span class="nav-num">5</span>
+      <span class="nav-text">
+        <div class="nav-title">INGO portfolio comparison</div>
+        <div class="nav-desc">Instrument, typical ticket, and example investment by organization, with sources</div>
+      </span>
+      <span class="nav-arrow">&rarr;</span>
+    </a>
+  </div>
+</div>
+</body>
+</html>
