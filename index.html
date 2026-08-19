@@ -72,6 +72,22 @@
   .nav-title{font-size:14px;font-weight:500;color:var(--text-primary);}
   .nav-desc{font-size:12px;color:var(--text-secondary);margin-top:2px;}
   .nav-arrow{flex:none;color:var(--text-secondary);font-size:14px;}
+
+  .group-label{
+    font-size:11px;
+    font-weight:600;
+    color:var(--text-secondary);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin:0 0 8px;
+  }
+  .group-divider{
+    border:none;
+    border-top:1px solid var(--border);
+    margin:24px 0 14px;
+  }
+  .group-sub{font-size:12px;color:var(--text-secondary);margin:-4px 0 10px;}
+  .followup-note{font-size:12px;color:var(--text-secondary);margin:12px 0 0;font-style:italic;}
 </style>
 </head>
 <body>
@@ -79,30 +95,31 @@
   <h1>Forest Flavors — deck contents</h1>
   <p class="caption">CRS Innovative Finance &middot; five interactive diagrams and reference tables</p>
 
+  <p class="group-label">Presented</p>
   <div class="nav-list">
-    <a class="nav-item" href="diagram8.html">
+    <a class="nav-item" href="ingo-strategy-profiles.html">
       <span class="nav-num">1</span>
       <span class="nav-text">
+        <div class="nav-title">INGO strategy profiles</div>
+        <div class="nav-desc">Mercy Corps, Ground Up Investing / Corus, One Acre Ventures, Heifer Impact Capital structures</div>
+      </span>
+      <span class="nav-arrow">&rarr;</span>
+    </a>
+
+    <a class="nav-item" href="diagram8.html">
+      <span class="nav-num">2</span>
+      <span class="nav-text">
         <div class="nav-title">Impact chain</div>
-        <div class="nav-desc">Diagram 8 &mdash; baseline, SMEs, lending, and market-driven states</div>
+        <div class="nav-desc">Baseline, SMEs, lending, and market-driven states</div>
       </span>
       <span class="nav-arrow">&rarr;</span>
     </a>
 
     <a class="nav-item" href="diagram1a.html">
-      <span class="nav-num">2</span>
-      <span class="nav-text">
-        <div class="nav-title">Market segmentation</div>
-        <div class="nav-desc">Diagram 1a &mdash; financing need vs. number of enterprises, built up in stages</div>
-      </span>
-      <span class="nav-arrow">&rarr;</span>
-    </a>
-
-    <a class="nav-item" href="ingo-strategy-profiles.html">
       <span class="nav-num">3</span>
       <span class="nav-text">
-        <div class="nav-title">INGO strategy profiles</div>
-        <div class="nav-desc">Mercy Corps, Ground Up Investing / Corus, One Acre Ventures, Heifer Impact Capital structures</div>
+        <div class="nav-title">Market segmentation</div>
+        <div class="nav-desc">Financing need vs. number of enterprises, built up in stages</div>
       </span>
       <span class="nav-arrow">&rarr;</span>
     </a>
@@ -115,9 +132,14 @@
       </span>
       <span class="nav-arrow">&rarr;</span>
     </a>
+  </div>
 
+  <hr class="group-divider">
+  <p class="group-label">Follow-up</p>
+  <p class="group-sub">Added after the meeting</p>
+  <div class="nav-list">
     <a class="nav-item" href="ingo-portfolio-comparison.html">
-      <span class="nav-num">5</span>
+      <span class="nav-num">+</span>
       <span class="nav-text">
         <div class="nav-title">INGO portfolio comparison</div>
         <div class="nav-desc">Instrument, typical ticket, and example investment by organization, with sources</div>
@@ -125,6 +147,7 @@
       <span class="nav-arrow">&rarr;</span>
     </a>
   </div>
+  <p class="followup-note">More follow-up material will be added here as it&rsquo;s ready.</p>
 </div>
 </body>
 </html>
