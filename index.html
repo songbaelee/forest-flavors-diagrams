@@ -107,6 +107,42 @@
   .ref-item:hover{border-color:var(--border-strong);background:var(--surface-2);}
   .ref-item .ref-title{color:var(--text-primary);font-weight:500;}
   .ref-item .ref-arrow{color:var(--text-secondary);font-size:13px;flex:none;}
+
+  #gated-content{display:none;}
+  #gate-form{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    padding:20px 0 8px;
+    text-align:center;
+  }
+  .gate-label{font-size:13px;color:var(--text-secondary);margin:0;}
+  .gate-input{
+    width:100%;
+    max-width:220px;
+    padding:8px 12px;
+    border:1px solid var(--border-strong);
+    border-radius:var(--radius);
+    font-size:14px;
+    font-family:inherit;
+    color:var(--text-primary);
+    box-sizing:border-box;
+  }
+  .gate-input:focus{outline:none;border-color:var(--text-secondary);}
+  .gate-btn{
+    padding:8px 16px;
+    border-radius:var(--radius);
+    border:1px solid var(--border-strong);
+    background:var(--surface-2);
+    color:var(--text-primary);
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .gate-btn:hover{background:var(--border);}
+  .gate-error{font-size:12px;color:var(--text-secondary);margin:0;display:none;}
 </style>
 </head>
 <body>
@@ -114,6 +150,18 @@
   <h1>Forest Flavors — deck contents</h1>
   <p class="caption">CRS Innovative Finance &middot; five interactive diagrams and reference tables</p>
 
+  <div id="gate-form">
+    <p class="gate-label">This page is password protected. Enter the password to continue.</p>
+    <form id="gateFormEl">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+        <input type="password" id="gatePassword" class="gate-input" placeholder="Password" autocomplete="off" autofocus>
+        <button type="submit" class="gate-btn">Unlock</button>
+        <p id="gateError" class="gate-error">Incorrect password. Try again.</p>
+      </div>
+    </form>
+  </div>
+
+  <div id="gated-content">
   <p class="group-label">Presented</p>
   <div class="nav-list">
     <a class="nav-item" href="ingo-strategy-profiles.html">
@@ -203,6 +251,40 @@
       <span class="ref-arrow">&#8599;</span>
     </a>
   </div>
+  </div>
 </div>
+
+<script>
+(function(){
+  var PASSWORD = "crs";
+  var gateForm = document.getElementById('gate-form');
+  var content = document.getElementById('gated-content');
+  var formEl = document.getElementById('gateFormEl');
+  var input = document.getElementById('gatePassword');
+  var errorEl = document.getElementById('gateError');
+
+  function unlock(){
+    sessionStorage.setItem('ff_unlocked', 'true');
+    gateForm.style.display = 'none';
+    content.style.display = 'block';
+  }
+
+  if (sessionStorage.getItem('ff_unlocked') === 'true') {
+    unlock();
+  }
+
+  formEl.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (input.value.toLowerCase() === PASSWORD.toLowerCase()) {
+      errorEl.style.display = 'none';
+      unlock();
+    } else {
+      errorEl.style.display = 'block';
+      input.value = '';
+      input.focus();
+    }
+  });
+})();
+</script>
 </body>
 </html>
