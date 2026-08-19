@@ -88,6 +88,25 @@
   }
   .group-sub{font-size:12px;color:var(--text-secondary);margin:-4px 0 10px;}
   .followup-note{font-size:12px;color:var(--text-secondary);margin:12px 0 0;font-style:italic;}
+
+  .subgroup-label{font-size:12px;font-weight:600;color:var(--text-primary);margin:14px 0 6px;}
+  .ref-list{display:flex;flex-direction:column;gap:8px;}
+  .ref-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 14px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    text-decoration:none;
+    color:inherit;
+    font-size:13px;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .ref-item:hover{border-color:var(--border-strong);background:var(--surface-2);}
+  .ref-item .ref-title{color:var(--text-primary);font-weight:500;}
+  .ref-item .ref-arrow{color:var(--text-secondary);font-size:13px;flex:none;}
 </style>
 </head>
 <body>
@@ -148,6 +167,42 @@
     </a>
   </div>
   <p class="followup-note">More follow-up material will be added here as it&rsquo;s ready.</p>
+
+  <hr class="group-divider">
+  <p class="group-label">Reference materials</p>
+  <p class="group-sub">SharePoint links &mdash; CRS login required</p>
+
+  <p class="subgroup-label">Concept notes</p>
+  <div class="ref-list">
+    <a class="ref-item" href="https://crsorg.sharepoint.com/:b:/s/TM-SPICES-Global-Expansion/IQBOIk_HgpgeSKUivh4AoxaoAZyqCEPDOEa0s1-kX-oBh2g?e=YC8qsq" target="_blank" rel="noopener">
+      <span class="ref-title">I&amp;P</span>
+      <span class="ref-arrow">&#8599;</span>
+    </a>
+    <a class="ref-item" href="https://crsorg.sharepoint.com/:w:/s/TM-SPICES-Global-Expansion/IQDlYZmQ62IbSp94l0qiofg3AZ4sqfqplboLmn-DdwDaDpE?e=fKtR7t" target="_blank" rel="noopener">
+      <span class="ref-title">Aceli</span>
+      <span class="ref-arrow">&#8599;</span>
+    </a>
+    <a class="ref-item" href="https://crsorg.sharepoint.com/:b:/s/TM-SPICES-Global-Expansion/IQCByifGPWTgSbkc3W5k2_F8AQh2hP6Td_yHSu-6gCfA2KM?e=5WrAuI" target="_blank" rel="noopener">
+      <span class="ref-title">Vula</span>
+      <span class="ref-arrow">&#8599;</span>
+    </a>
+  </div>
+
+  <p class="subgroup-label">Earlier presentations</p>
+  <div class="ref-list">
+    <a class="ref-item" href="https://crsorg.sharepoint.com/:p:/s/TM-SPICES-Global-Expansion/IQDKEn8biCTnRZHRsB8tlsWDAbI5OS4PsHsQqmaH7y5L8Eo?e=HQZt9L" target="_blank" rel="noopener">
+      <span class="ref-title">May 2026 presentation</span>
+      <span class="ref-arrow">&#8599;</span>
+    </a>
+    <a class="ref-item" href="https://crsorg.sharepoint.com/:p:/r/sites/TM-SPICES-Global-Expansion/Shared%20Documents/General/FF%20Innovative%20Finance/Presentations/FF%20facility%20July%202026.pptx?d=wc47e93d711034db086df48f88ed211f4&amp;csf=1&amp;web=1&amp;e=yUfcZy" target="_blank" rel="noopener">
+      <span class="ref-title">July 2026 presentation</span>
+      <span class="ref-arrow">&#8599;</span>
+    </a>
+    <a class="ref-item" href="https://crsorg.sharepoint.com/:u:/s/TM-SPICES-Global-Expansion/IQCtQWpudLyMRo5AlXjLkCF5ATR-IwG4AO4Cwrwiptz8I44?e=Xv5UGl" target="_blank" rel="noopener">
+      <span class="ref-title">August 2026 visuals</span>
+      <span class="ref-arrow">&#8599;</span>
+    </a>
+  </div>
 </div>
 </body>
 </html>

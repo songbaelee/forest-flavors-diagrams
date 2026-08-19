@@ -21,7 +21,7 @@
 <div id="stage-wrap" onclick="advance()">
 <svg width="100%" viewBox="0 90 1304 561" role="img">
 <title>Market segmentation and enabling conditions for agri-SME finance, built up in stages</title>
-<desc>An interactive step-by-step build of a chart showing financing need against number of enterprises across four bands, followed by enabling conditions and two Aceli mechanism badges. Click to advance through the stages.</desc>
+<desc>An interactive step-by-step build of a chart showing financing need against number of enterprises across four bands, followed by enabling conditions. Click to advance through the stages.</desc>
 <defs>
   <pattern id="hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
     <rect width="16" height="16" fill="#F1EFE8"/>
@@ -133,28 +133,14 @@
     <text x="1058" y="478" text-anchor="middle" font-size="15" fill="#5F5E5A">/ incentives</text>
   </g>
 
-  <!-- STEP 10: Aceli incentive program badge (tags the Higher concessionality arrow) -->
-  <g id="step-10" class="stage" style="opacity:0">
-    <circle cx="1059" cy="373" r="5.5" fill="#D85A30"/>
-    <rect x="974" y="536" width="170" height="30" rx="15" fill="#F5C4B3"/>
-    <text x="1059" y="556" text-anchor="middle" font-size="13" font-weight="500" fill="#4A1B0C">Aceli incentive program</text>
-  </g>
-
-  <!-- STEP 11: Aceli wholesale fund badge (tags the Concessional capital arrow) -->
-  <g id="step-11" class="stage" style="opacity:0">
-    <circle cx="875" cy="322" r="5.5" fill="#D85A30"/>
-    <rect x="790" y="536" width="170" height="30" rx="15" fill="#F5C4B3"/>
-    <text x="875" y="556" text-anchor="middle" font-size="13" font-weight="500" fill="#4A1B0C">Aceli wholesale fund</text>
-  </g>
-
-  <text id="counter" x="1228" y="645" text-anchor="end" font-size="12" fill="#888780">Click to continue · 1 / 11</text>
+  <text id="counter" x="1228" y="645" text-anchor="end" font-size="12" fill="#888780">Click to continue · 1 / 9</text>
 
 </g>
 </svg>
 </div>
 <script>
   var step = 1;
-  var total = 11;
+  var total = 9;
   function advance() {
     step++;
     if (step > total) {

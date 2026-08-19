@@ -44,6 +44,31 @@
   tr:last-child td{border-bottom:none;}
   .org{font-weight:500; color:var(--text-primary);}
   .sub{color:var(--text-secondary);}
+  .status-note{font-size:11px; font-style:italic; color:var(--text-secondary); margin-top:4px; line-height:1.5;}
+  tr.added td{background:var(--surface-2);}
+  .added-tag{
+    display:inline-block;
+    font-size:10px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    color:var(--text-secondary);
+    background:var(--surface-1);
+    border:1px solid var(--border-strong);
+    border-radius:10px;
+    padding:1px 7px;
+    margin-left:6px;
+    vertical-align:middle;
+  }
+  .followup-callout{
+    margin-top:20px;
+    padding:16px;
+    border:1px solid var(--border-strong);
+    border-radius:var(--radius);
+    background:var(--surface-2);
+  }
+  .followup-callout p.label{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.03em; color:var(--text-secondary); margin:0 0 8px;}
+  .followup-callout p.body{font-size:13px; line-height:1.7; color:var(--text-primary); margin:0;}
 </style>
 </head>
 <body>
@@ -60,6 +85,7 @@
   <th>Instrument</th>
   <th>Typical ticket</th>
   <th>Example investment</th>
+  <th>Indicative returns</th>
   </tr>
   </thead>
   <tbody>
@@ -68,24 +94,44 @@
   <td class="sub">Equity</td>
   <td class="sub">Seed &ndash; Series A</td>
   <td class="sub">Tappi (Kenya fintech)</td>
+  <td class="sub">24% IRR, 2.1x MOIC (disclosed)</td>
   </tr>
   <tr>
   <td><div class="org">One Acre Ventures</div><div class="sub">Direct lending</div></td>
   <td class="sub">Debt</td>
   <td class="sub">$250K+</td>
   <td class="sub">Enimiro (Uganda vanilla/coffee)</td>
+  <td class="sub">Not disclosed; consistent with capital preservation</td>
   </tr>
   <tr>
   <td><div class="org">Ground Up Investing</div><div class="sub">Blended, company-building</div></td>
   <td class="sub">Equity, quasi-equity, debt</td>
   <td class="sub">$200K&ndash;500K</td>
   <td class="sub">Mountain Harvest (Uganda coffee)</td>
+  <td class="sub">Not disclosed; consistent with capital preservation</td>
   </tr>
   <tr>
   <td><div class="org">Heifer Impact Capital</div><div class="sub">Blended, program-integrated</div></td>
   <td class="sub">Loans, guarantees, equity</td>
   <td class="sub">$50K&ndash;840K</td>
   <td class="sub">Grass Roots Farmers' Cooperative (USA)</td>
+  <td class="sub">Not disclosed; consistent with capital preservation</td>
+  </tr>
+  <tr class="added">
+  <td><div class="org">ACDI/VOCA (AV Ventures)<span class="added-tag">Not in original profiles</span></div>
+  <div class="status-note">ACDI/VOCA (the parent org) laid off 137 staff across 4 WARN notices, Mar&ndash;Nov 2025, tied to USAID funding cuts &mdash; impact on AV Ventures specifically not separately documented</div></td>
+  <td class="sub">Blended (debt, revenue-based loans, some equity)</td>
+  <td class="sub">$100K&ndash;$1M</td>
+  <td class="sub">AgroCenta (Ghana agri-tech platform)</td>
+  <td class="sub">Not disclosed; catalytic/concessional capital</td>
+  </tr>
+  <tr class="added">
+  <td><div class="org">Cordaid (CIMBV)<span class="added-tag">Not in original profiles</span></div>
+  <div class="status-note">Confirmed wound down. Cordaid's board decided in March 2023 to wind down the investment programme managed by CIM BV, repurposing the Loans &amp; Guarantees reserves (including the West Africa Bright Future Fund), with unwinding expected to conclude by 2029</div></td>
+  <td class="sub">Blended (equity, subordinated debt, senior debt, guarantees)</td>
+  <td class="sub">Varies; historically smaller check sizes across MFI/SME portfolio</td>
+  <td class="sub">Mountain Lion (Sierra Leone rice milling/out-grower scheme)</td>
+  <td class="sub">Self-reported &quot;in line with target returns&quot; (dated); program since wound down</td>
   </tr>
   </tbody>
   </table>
@@ -115,13 +161,32 @@
   <a href="https://corusinternational.org/blog/2023/corus-effect-how-mountain-harvest-transforms-lives-through-coffee" target="_blank" rel="noopener" style="color:var(--text-secondary);">Example: Mountain Harvest</a>
   </p>
 
-  <p style="margin:0;">
+  <p style="margin:0 0 8px;">
   <span class="org" style="font-size:12px;">Heifer Impact Capital</span> &mdash;
   <a href="https://www.heifer.org/our-work/approach/leveraging-capital" target="_blank" rel="noopener" style="color:var(--text-secondary);">Organization &amp; approach</a> &middot;
   <a href="https://www.prnewswire.com/news-releases/heifer-international-celebrates-achievements-in-farmer-led-impact-investments-launches-new-chapter-in-regenerative-agriculture-302538979.html" target="_blank" rel="noopener" style="color:var(--text-secondary);">Portfolio &amp; example: Grass Roots Farmers' Cooperative</a>
   </p>
 
+  <p style="margin:0 0 8px;">
+  <span class="org" style="font-size:12px;">ACDI/VOCA (AV Ventures)</span> &mdash;
+  <a href="https://www.acdivoca.org/who-we-are/about-av-group/" target="_blank" rel="noopener" style="color:var(--text-secondary);">Organization</a> &middot;
+  <a href="https://av-ventures.com/" target="_blank" rel="noopener" style="color:var(--text-secondary);">AV Ventures</a> &middot;
+  <a href="https://www.acdivoca.org/2021/02/av-ventures-invests-in-agrocenta-supporting-digital-and-financial-inclusion-of-ghanaian-smallholder-farmers/" target="_blank" rel="noopener" style="color:var(--text-secondary);">Example: AgroCenta</a> &middot;
+  <a href="https://www.warntracker.com/company/acdi-voca" target="_blank" rel="noopener" style="color:var(--text-secondary);">Status source</a>
+  </p>
+
+  <p style="margin:0;">
+  <span class="org" style="font-size:12px;">Cordaid (CIMBV)</span> &mdash;
+  <a href="https://vc4a.com/cordaid-investment-management/" target="_blank" rel="noopener" style="color:var(--text-secondary);">Organization &amp; approach</a> &middot;
+  <a href="https://www.cordaid.org/en/publications/annual-report-2022/" target="_blank" rel="noopener" style="color:var(--text-secondary);">Wind-down source</a>
+  </p>
+
   </div>
+  </div>
+
+  <div class="followup-callout">
+  <p class="label">Follow-up note</p>
+  <p class="body">Mercy Corps Ventures vs. Mercy Corps AgriFin &mdash; these are separate initiatives under the same parent organization, not two versions of the same thing. Mercy Corps AgriFin (MCAF) is a donor-funded facilitation program (Gates Foundation, Mastercard Foundation, Swiss Development Corporation) that helps partners &mdash; banks, mobile network operators, agribusinesses &mdash; design and test digital financial services for smallholder farmers. It makes no direct investments. Mercy Corps Ventures (MCV), profiled above, is the actual capital vehicle. The two are linked only administratively (MCV's Scott Onder sits on AgriFin's advisory council) and share a parent org and target geography.</p>
   </div>
 </div>
 
