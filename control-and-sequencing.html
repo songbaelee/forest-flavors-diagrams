@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forest Flavors — Control and Sequencing</title>
+<style>
+  :root{
+    --surface-1:#ffffff;
+    --surface-2:#f3f4f6;
+    --border:#e5e7eb;
+    --border-strong:#d1d5db;
+    --text-primary:#1f2937;
+    --text-secondary:#6b7280;
+    --radius:8px;
+    --arrow:#6b7280;
+  }
+  body{
+    margin:0;
+    padding:32px 16px;
+    background:var(--surface-2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text-primary);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+  }
+  .card{
+    background:var(--surface-1);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:24px;
+    max-width:760px;
+    width:100%;
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
+    box-sizing:border-box;
+  }
+  h1{font-size:16px;font-weight:600;margin:0 0 4px;}
+  p.caption{font-size:13px;color:var(--text-secondary);margin:0 0 16px;}
+  .back-link{display:inline-block;font-size:12px;color:var(--text-secondary);text-decoration:none;margin:0 0 12px;}
+  .back-link:hover{color:var(--text-primary);text-decoration:underline;}
+  p.body-text{font-size:14px;line-height:1.7;margin:0;}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <a class="back-link" href="index.html">&larr; Back to contents</a>
+  <h1>Control and sequencing</h1>
+  <p class="caption">Forest Flavors, CRS Innovative Finance</p>
+  <p class="body-text">This page maps the range of ways CRS could structure the Forest Flavors lending facility. We start with the question: how much does CRS control origination, underwriting, and the funding source, versus working through &mdash; leveraging &mdash; existing market actors who already do this? The decision tree below sorts reference models and comparable partners along that split, starting with the highest-level divide: models CRS runs directly, and models where CRS works through someone else.</p>
+</div>
+
+<div class="card">
+  <h1>Control vs. sequencing diagram</h1>
+  <img src="images/control-sequencing-diagram.svg" alt="Control and sequencing decision tree" style="max-width:100%;height:auto;display:block;margin:0 auto;">
+</div>
+
+</body>
+</html>
