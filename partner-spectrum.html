@@ -47,6 +47,9 @@
   table.lens-table th{background:var(--surface-2);font-weight:600;color:var(--text-primary);}
   table.lens-table td{color:var(--text-secondary);}
   table.lens-table th:first-child,table.lens-table td:first-child{color:var(--text-primary);font-weight:500;}
+  table.lens-table th.grp-mandate{background:var(--surface-2);}
+  table.lens-table th.grp-crs{background:#e1f5ee;}
+  table.lens-table th.grp-indirect{background:#faece7;}
 </style>
 </head>
 <body>
@@ -104,7 +107,8 @@
 <div class="card">
   <h1 style="margin-bottom:16px;">A closer look: five lenses</h1>
   <table class="lens-table">
-    <tr><th></th><th>Mandate</th><th>Isidro</th><th>Azure</th><th>Indirect</th></tr>
+    <tr><th></th><th class="grp-mandate">Mandate</th><th class="grp-crs" colspan="2">CRS-sponsored</th><th class="grp-indirect">Indirect</th></tr>
+    <tr><th></th><th class="grp-mandate"></th><th class="grp-crs">Isidro</th><th class="grp-crs">Azure</th><th class="grp-indirect"></th></tr>
     <tr><td>Decision-making</td><td>Controls</td><td>IC vote</td><td>IC vote</td><td>No IC representation</td></tr>
     <tr><td>CRS branding</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td></tr>
     <tr><td>Pipeline control</td><td>CRS</td><td>CRS</td><td>CRS</td><td>Partner</td></tr>
