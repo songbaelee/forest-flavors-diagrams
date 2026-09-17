@@ -64,26 +64,6 @@ body {
 .decision-card.dimmed {
   opacity: .5;
 }
-.placeholder {
-  margin-top: 16px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  font-size: 14px;
-  color: var(--text-secondary);
-  border: 0.5px dashed var(--border-strong);
-  border-radius: var(--radius);
-  box-sizing: border-box;
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity .35s ease, max-height .35s ease, margin-top .35s ease;
-}
-.placeholder.show {
-  opacity: 1;
-  max-height: 44px;
-}
 .branch {
   opacity: 0;
   max-height: 0;
@@ -174,6 +154,67 @@ body {
   max-height: 200px;
   margin-top: 16px;
 }
+.step-box {
+  border-radius: var(--radius);
+  border: 0.5px solid var(--teal-600);
+  background: var(--teal-50);
+  padding: 12px 16px;
+  box-sizing: border-box;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity .35s ease, max-height .35s ease, margin-top .35s ease;
+}
+.step-box.show { opacity: 1; max-height: 120px; }
+.step-box .title { font-size: 14px; font-weight: 500; color: var(--teal-800); }
+.step-box .subtitle { font-size: 12px; color: var(--teal-800); opacity: .8; margin-top: 2px; }
+.step-row { display: flex; gap: 16px; margin-top: 16px; }
+.step-row .step-box { flex: 1; }
+.venn-wrap {
+  position: relative;
+  height: 200px;
+  margin-top: 16px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity .35s ease, max-height .35s ease, margin-top .35s ease;
+}
+.venn-wrap.show { opacity: 1; max-height: 240px; }
+.venn-circle {
+  position: absolute;
+  top: 20px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  transition: left .3s ease;
+}
+.venn-a { background: rgba(15,110,86,0.35); color: var(--teal-800); }
+.venn-b { background: rgba(59,130,246,0.35); color: #1e3a8a; }
+.overlap-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity .35s ease, max-height .35s ease;
+}
+.overlap-row.show { opacity: 1; max-height: 60px; }
+.overlap-row input[type=range] { flex: 1; }
+#existingBar1, #existingBar2 {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity .35s ease, max-height .35s ease, margin-top .35s ease;
+}
+#existingBar1.show, #existingBar2.show { opacity: 1; max-height: 44px; }
 </style>
 </head>
 <body>
@@ -194,7 +235,47 @@ body {
     <span style="font-size:14px;">→</span>
   </div>
 
-  <div class="placeholder" id="placeholder">Coming later</div>
+  <div class="branch" id="branchExisting" onclick="advanceExisting()">
+    <div class="bar" id="existingBar1" style="justify-content:center;">
+      <span>Screening</span>
+    </div>
+    <div class="step-row">
+      <div class="step-box" id="stepStrategy">
+        <div class="title">Strategy alignment</div>
+        <div class="subtitle">e.g. geography, value chain</div>
+      </div>
+      <div class="step-box" id="stepFarmer">
+        <div class="title">Farmer impact alignment</div>
+        <div class="subtitle">Farmer benefit is real</div>
+      </div>
+    </div>
+    <div class="step-box" id="stepTA" style="margin-top:16px;">
+      <div class="title">TA overlap</div>
+      <div class="subtitle">Portfolio vs TA reach</div>
+    </div>
+    <div class="venn-wrap" id="vennWrap">
+      <div class="venn-circle venn-a" id="vennA">Portfolio SMEs</div>
+      <div class="venn-circle venn-b" id="vennB">TA SMEs</div>
+    </div>
+    <div class="overlap-row" id="overlapRow" onclick="event.stopPropagation()">
+      <span style="font-size:12px;color:var(--text-secondary);">Overlap</span>
+      <input type="range" id="overlapSlider" min="0" max="100" value="0" step="1">
+      <span id="overlapOut" style="font-size:12px;min-width:32px;">0%</span>
+    </div>
+    <div class="bar" id="existingBar2" style="justify-content:center;margin-top:16px;">
+      <span>How we engage</span>
+    </div>
+    <div class="step-row">
+      <div class="step-box" id="stepInfluence">
+        <div class="title">Influence</div>
+        <div class="subtitle">LP vs IC seat</div>
+      </div>
+      <div class="step-box" id="stepVehicle">
+        <div class="title">Vehicle</div>
+        <div class="subtitle">Fund vs sidecar</div>
+      </div>
+    </div>
+  </div>
 
   <div class="branch" id="branchBuild" onclick="advance()">
     <div id="intro" style="cursor:pointer;">
@@ -236,14 +317,13 @@ function selectBranch(which){
   document.getElementById('cardExisting').classList.toggle('selected', which === 'existing');
   document.getElementById('cardExisting').classList.toggle('dimmed', which === 'build');
   document.getElementById('branchBuild').classList.toggle('show', which === 'build');
-  document.getElementById('placeholder').classList.toggle('show', which === 'existing');
+  document.getElementById('branchExisting').classList.toggle('show', which === 'existing');
   if (which !== 'build') { step = 0; render(); }
+  if (which !== 'existing') { existingStep = 0; renderExisting(); }
   var hint = document.getElementById('hint');
-  if (which === 'build') {
+  if (which === 'build' || which === 'existing') {
     document.getElementById('hintText').textContent = 'Click anywhere to continue';
     hint.style.display = 'flex';
-  } else if (which === 'existing') {
-    hint.style.display = 'none';
   }
 }
 
@@ -293,6 +373,41 @@ function scrollToCurrentStep(){
 
 render();
 window.addEventListener('resize', render);
+
+var existingStep = 0;
+var existingMax = 6;
+
+function advanceExisting(){
+  existingStep = (existingStep + 1) % (existingMax + 1);
+  renderExisting();
+}
+
+function renderExisting(){
+  document.getElementById('existingBar1').classList.toggle('show', existingStep >= 1);
+  document.getElementById('stepStrategy').classList.toggle('show', existingStep >= 2);
+  document.getElementById('stepFarmer').classList.toggle('show', existingStep >= 3);
+  document.getElementById('stepTA').classList.toggle('show', existingStep >= 4);
+  document.getElementById('vennWrap').classList.toggle('show', existingStep >= 4);
+  document.getElementById('overlapRow').classList.toggle('show', existingStep >= 4);
+  document.getElementById('existingBar2').classList.toggle('show', existingStep >= 5);
+  document.getElementById('stepInfluence').classList.toggle('show', existingStep >= 5);
+  document.getElementById('stepVehicle').classList.toggle('show', existingStep >= 6);
+}
+
+function setOverlap(v){
+  var wrap = document.getElementById('vennWrap');
+  var width = wrap.offsetWidth;
+  var gap = 160 - v * 2.4;        // px between circle edges (negative = overlap); tune by eye
+  var center = width / 2;
+  document.getElementById('vennA').style.left = (center - 140 - gap/2) + 'px';
+  document.getElementById('vennB').style.left = (center + gap/2) + 'px';
+  document.getElementById('overlapOut').textContent = Math.round(v) + '%';
+}
+document.getElementById('overlapSlider').addEventListener('input', function(){
+  setOverlap(this.value);
+});
+setOverlap(0);
+renderExisting();
 </script>
 </body>
 </html>
