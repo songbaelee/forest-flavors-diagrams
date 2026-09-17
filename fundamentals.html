@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Reading the market before the deal</title>
+<style>
+  :root {
+    --surface-1: #ffffff;
+    --surface-2: #f3f4f6;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --radius: 8px;
+    --arrow: #6b7280;
+  }
+  body {
+    margin: 0;
+    padding: 40px 24px 80px;
+    background: var(--surface-2);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0 0 40px;
+  }
+  section {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+  p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin: 0 0 16px;
+  }
+  .placeholder {
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 14px;
+  }
+  .instruction {
+    text-align: center;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  #stage {
+    cursor: pointer;
+  }
+  .outline { fill: none; stroke: var(--text-primary); stroke-width: 1.5; stroke-linejoin: round; }
+  .divider { fill: none; stroke: var(--text-primary); stroke-width: 1; }
+  .dot { fill: none; stroke: var(--text-primary); stroke-width: 1; }
+  .picked1 { fill: none; stroke: var(--text-primary); stroke-width: 1.5; transition: x 0.8s ease, y 0.8s ease, width 0.8s ease, height 0.8s ease, rx 0.8s ease; }
+  .picked2 { fill: none; stroke: var(--text-primary); stroke-width: 1.2; transition: x 0.8s ease, y 0.8s ease, width 0.8s ease, height 0.8s ease, rx 0.8s ease; }
+  .lbl { opacity: 0; transition: opacity 0.5s ease; font-size: 13px; fill: var(--text-secondary); }
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Reading the market before the deal</h1>
+
+  <section id="segmentation">
+    <h2>Segmentation</h2>
+    <p>Segmentation establishes the core constraint. Donors usually segment by value chain, but if you're a lender, the most useful variable, the one that tells you the most for the least effort, is the loan size a business is looking for.</p>
+
+    <div class="instruction">Click anywhere, or press space, to advance</div>
+
+    <div id="stage" tabindex="0">
+      <h2 class="sr-only">A pyramid of companies by loan size that advances through a click driven sequence: an example prompt, ten 1 million dollar loans forming a row then a stacked 10 million dollar column, a second prompt, twenty 500 thousand dollar loans forming a row then a matching stacked column, and a closing line comparing the two</h2>
+      <svg id="scene" width="100%" viewBox="0 0 680 970" xmlns="http://www.w3.org/2000/svg">
+        <path class="outline" d="M340,40 L580,480 L100,480 Z"/>
+        <line class="divider" x1="242" y1="220" x2="438" y2="220"/>
+        <line class="divider" x1="166" y1="360" x2="514" y2="360"/>
+        <g id="bg"></g>
+        <g id="picked1"></g>
+        <g id="picked2"></g>
+        <text id="caption1" class="lbl" x="340" y="505" text-anchor="middle">Let's look at an example where one loan officer can manage 10 loans.</text>
+        <text id="row1lbl" class="lbl" x="340" y="628" text-anchor="middle">10 loans of $1M each = $10M</text>
+        <text id="stack1total" class="lbl" x="230" y="728" text-anchor="middle">$10M</text>
+        <text id="stack1lbl" class="lbl" x="230" y="910" text-anchor="middle">10 loans of $1M</text>
+        <text id="caption2" class="lbl" x="340" y="628" text-anchor="middle">Now, what if the loan sizes are $500,000 instead of $1 million?</text>
+        <text id="row2lbl" class="lbl" x="340" y="706" text-anchor="middle">20 loans of $500K each = $10M</text>
+        <text id="stack2total" class="lbl" x="450" y="728" text-anchor="middle">$10M</text>
+        <text id="stack2lbl" class="lbl" x="450" y="910" text-anchor="middle">20 loans of $500K</text>
+        <text id="conclusion" class="lbl" x="340" y="945" text-anchor="middle">Now it'll take two loan officers to manage the same $10 million volume</text>
+      </svg>
+    </div>
+  </section>
+
+  <section id="banks-vs-funds">
+    <h2>Banks vs. funds</h2>
+    <p class="placeholder">Content coming soon. Banks are profitable, funds are not. Funds are easier to work with but have higher cost structures and dollar-denominated funding. Banks have cheaper local currency funding through deposits but are harder to work with. Ecosystem-building work points toward banks; niche or pilot work points toward funds.</p>
+  </section>
+
+  <section id="pipeline">
+    <h2>Pipeline</h2>
+    <p class="placeholder">Content coming soon. How many companies you need to screen to reach a target number of deals, and how that changes between an investment approach and a technical assistance approach.</p>
+  </section>
+</div>
+
+<script>
+const TOP = [[339.64,91.0],[313.96,113.26],[337.62,112.69],[367.08,114.81],[311.51,133.16],[336.91,136.99],[366.88,131.19],[291.01,157.57],[312.33,153.03],[340.21,153.37],[362.74,154.75],[386.6,156.43],[289.8,181.34],[315.27,179.81],[340.0,179.98],[364.55,177.07],[393.51,182.5],[288.93,197.55],[317.28,200.05],[342.62,199.94],[368.2,203.43],[385.7,198.61]];
+const svg = document.getElementById('scene');
+const ns = 'http://www.w3.org/2000/svg';
+function addCircles(pts, r){
+  pts.forEach(([x,y])=>{
+    const c = document.createElementNS(ns,'circle');
+    c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r',r);
+    c.setAttribute('class','dot');
+    document.getElementById('bg').appendChild(c);
+  });
+}
+addCircles(TOP, 9.5);
+function edgeX(y){ const f=(y-40)/440; return [340-240*f,340+240*f]; }
+function fillBand(yMin,yMax,d,spacingMult){
+  const pts=[]; const rowGap=d*spacingMult; let y=yMin+d/2+3; let row=0;
+  while(y<yMax-d/2-2){
+    const [left,right]=edgeX(y); const pad=d/2+3; const avail=right-left-2*pad;
+    if(avail>d*0.6){
+      const n=Math.max(1,Math.floor(avail/(d*spacingMult)));
+      const step=avail/n; const offset=(row%2)*step/2; let x=left+pad+offset;
+      for(let i=0;i<=n;i++){
+        const xj=x+i*step+(Math.random()*2-1)*d*0.18;
+        const yj=y+(Math.random()*2-1)*d*0.18;
+        const [l2,r2]=edgeX(yj);
+        if(xj>=l2+d/2+2 && xj<=r2-d/2-2) pts.push([xj,yj]);
+      }
+    }
+    y+=rowGap; row++;
+  }
+  return pts;
+}
+function pickEven(pts, n){
+  const sorted = pts.slice().sort((a,b)=>a[0]-b[0]);
+  const idxs = Array.from({length:n},(_,i)=>Math.round(i*(sorted.length-1)/(n-1)));
+  const picked = idxs.map(i=>sorted[i]);
+  const pickedSet = new Set(picked.map(p=>p.join(',')));
+  const rest = pts.filter(p=>!pickedSet.has(p.join(',')));
+  return {picked, rest};
+}
+const mid = fillBand(220,360,13,1.08);
+const bot = fillBand(360,480,7.5,1.1);
+const {picked: picked1, rest: midRest} = pickEven(mid, 10);
+const {picked: picked2, rest: botRest} = pickEven(bot, 20);
+addCircles(midRest, 5.5);
+addCircles(botRest, 2.75);
+
+function target1(state, i, x, y){
+  if(state===0) return {x:x-5.5,y:y-5.5,w:11,h:11,rx:5.5};
+  if(state===1) return {x:97+i*(36+14), y:530, w:36, h:80, rx:0};
+  return {x:175, y:890-(i+1)*15, w:110, h:15, rx:0};
+}
+function target2(state, i, x, y){
+  if(state===0) return {x:x-2.75,y:y-2.75,w:5.5,h:5.5,rx:2.75};
+  if(state===1) return {x:24+i*(24+8), y:650, w:24, h:40, rx:0};
+  return {x:395, y:890-(i+1)*7.5, w:110, h:7.5, rx:0};
+}
+function apply(r, t){
+  r.setAttribute('x',t.x); r.setAttribute('y',t.y);
+  r.setAttribute('width',t.w); r.setAttribute('height',t.h); r.setAttribute('rx',t.rx);
+}
+const rects1 = picked1.map(([x,y],i)=>{
+  const r = document.createElementNS(ns,'rect');
+  apply(r, target1(0,i,x,y));
+  r.setAttribute('class','picked1');
+  r.style.transitionDelay = (i*0.04)+'s';
+  document.getElementById('picked1').appendChild(r);
+  return r;
+});
+const rects2 = picked2.map(([x,y],i)=>{
+  const r = document.createElementNS(ns,'rect');
+  apply(r, target2(0,i,x,y));
+  r.setAttribute('class','picked2');
+  r.style.transitionDelay = (i*0.025)+'s';
+  document.getElementById('picked2').appendChild(r);
+  return r;
+});
+
+const allLabels = ['caption1','row1lbl','stack1total','stack1lbl','caption2','row2lbl','stack2total','stack2lbl','conclusion'];
+let step = 0;
+const g1state = [0,0,1,2,2,2,2,2];
+const g2state = [0,0,0,0,0,1,2,2];
+const visibleLabels = {
+  1: ['caption1'],
+  2: ['caption1','row1lbl'],
+  3: ['caption1','stack1total','stack1lbl'],
+  4: ['caption1','stack1total','stack1lbl','caption2'],
+  5: ['caption1','stack1total','stack1lbl','caption2','row2lbl'],
+  6: ['caption1','stack1total','stack1lbl','caption2','stack2total','stack2lbl'],
+  7: ['caption1','stack1total','stack1lbl','caption2','stack2total','stack2lbl','conclusion']
+};
+function render(){
+  rects1.forEach((r,i)=>apply(r, target1(g1state[step], i, ...picked1[i])));
+  rects2.forEach((r,i)=>apply(r, target2(g2state[step], i, ...picked2[i])));
+  allLabels.forEach(id=>document.getElementById(id).style.opacity=0);
+  (visibleLabels[step]||[]).forEach(id=>document.getElementById(id).style.opacity=1);
+}
+function advance(){ step = (step+1)%8; render(); }
+const stage = document.getElementById('stage');
+stage.addEventListener('click', advance);
+stage.addEventListener('keydown', e=>{ if(e.code==='Space'){ e.preventDefault(); advance(); } });
+stage.focus();
+</script>
+</body>
+</html>
