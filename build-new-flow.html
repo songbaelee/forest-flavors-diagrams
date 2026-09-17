@@ -166,10 +166,37 @@ body {
   transition: opacity .35s ease, max-height .35s ease, margin-top .35s ease;
 }
 .step-box.show { opacity: 1; max-height: 120px; }
+#stepTA.show { max-height: 420px; }
 .step-box .title { font-size: 14px; font-weight: 500; color: var(--teal-800); }
 .step-box .subtitle { font-size: 12px; color: var(--teal-800); opacity: .8; margin-top: 2px; }
 .step-row { display: flex; gap: 16px; margin-top: 16px; }
 .step-row .step-box { flex: 1; }
+.group-wrap {
+  border-radius: var(--radius);
+  border: 0.5px solid var(--teal-600);
+  background: var(--teal-50);
+  padding: 16px;
+  box-sizing: border-box;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity .35s ease, max-height .35s ease, margin-top .35s ease;
+}
+.group-wrap.show { opacity: 1; max-height: 300px; margin-top: 16px; }
+.group-wrap .group-title { font-size: 14px; font-weight: 500; color: var(--teal-800); text-align: center; }
+.group-wrap .step-row { margin-top: 16px; }
+.venn-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity .35s ease, max-height .35s ease, margin-top .35s ease;
+}
+.venn-legend.show { opacity: 1; max-height: 30px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+.swatch { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
 .venn-wrap {
   position: relative;
   height: 200px;
@@ -186,16 +213,11 @@ body {
   width: 140px;
   height: 140px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 500;
+  box-sizing: border-box;
   transition: left .3s ease;
 }
-.venn-a { background: rgba(15,110,86,0.35); color: var(--teal-800); }
-.venn-b { background: rgba(59,130,246,0.35); color: #1e3a8a; }
+.venn-a { background: rgba(15,110,86,0.45); border: 1.5px solid #0F6E56; }
+.venn-b { background: rgba(59,130,246,0.45); border: 1.5px solid #1d4ed8; }
 .overlap-row {
   display: flex;
   align-items: center;
@@ -208,13 +230,17 @@ body {
 }
 .overlap-row.show { opacity: 1; max-height: 60px; }
 .overlap-row input[type=range] { flex: 1; }
-#existingBar1, #existingBar2 {
+.reveal-text {
   opacity: 0;
   max-height: 0;
   overflow: hidden;
   transition: opacity .35s ease, max-height .35s ease, margin-top .35s ease;
+  font-size: 14px;
+  color: var(--text-secondary);
 }
-#existingBar1.show, #existingBar2.show { opacity: 1; max-height: 44px; }
+.reveal-text.show { opacity: 1; max-height: 420px; margin-top: 16px; }
+.reveal-text p { margin: 0 0 8px; }
+.reveal-text p:last-child { margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -226,7 +252,7 @@ body {
     </div>
     <div class="decision-card" id="cardExisting" onclick="selectBranch('existing')">
       <div class="title">Partner with existing</div>
-      <div class="subtitle">TBD</div>
+      <div class="subtitle">e.g. invest in an existing fund</div>
     </div>
   </div>
 
@@ -236,44 +262,66 @@ body {
   </div>
 
   <div class="branch" id="branchExisting" onclick="advanceExisting()">
-    <div class="bar" id="existingBar1" style="justify-content:center;">
-      <span>Screening</span>
+    <div id="existingIntro">
+      <p style="font-size:14px;color:var(--text-secondary);margin:0 0 8px;">This is a high-level approach to evaluating potential partners.</p>
+      <p style="font-size:14px;color:var(--text-secondary);margin:0;">The first thing is to screen on investment and impact alignment.</p>
     </div>
-    <div class="step-row">
-      <div class="step-box" id="stepStrategy">
-        <div class="title">Strategy alignment</div>
-        <div class="subtitle">e.g. geography, value chain</div>
+    <div class="group-wrap" id="groupScreening">
+      <div class="group-title">Screening</div>
+      <div class="step-row">
+        <div class="step-box" id="stepStrategy">
+          <div class="title">Strategy alignment</div>
+          <div class="subtitle">e.g. geography, value chain</div>
+        </div>
+        <div class="step-box" id="stepFarmer">
+          <div class="title">Farmer impact alignment</div>
+          <div class="subtitle">Farmer benefit is real</div>
+        </div>
       </div>
-      <div class="step-box" id="stepFarmer">
-        <div class="title">Farmer impact alignment</div>
-        <div class="subtitle">Farmer benefit is real</div>
-      </div>
+    </div>
+    <div class="reveal-text" id="taCommentary1">
+      <p>In the case of build new, Azure's pipeline came from businesses that CRS provided technical assistance to. Even though Isidro was finance first, we could guarantee that all the businesses that receive loans would also receive TA from CRS because we effectively controlled the lending.</p>
+    </div>
+    <div class="reveal-text" id="taCommentary2">
+      <p>In the case of a fund designed by somebody else, we would need to make an estimate of how many of the businesses in their portfolio we will be able to provide TA to.</p>
     </div>
     <div class="step-box" id="stepTA" style="margin-top:16px;">
       <div class="title">TA overlap</div>
       <div class="subtitle">Portfolio vs TA reach</div>
-    </div>
-    <div class="venn-wrap" id="vennWrap">
-      <div class="venn-circle venn-a" id="vennA">Portfolio SMEs</div>
-      <div class="venn-circle venn-b" id="vennB">TA SMEs</div>
-    </div>
-    <div class="overlap-row" id="overlapRow" onclick="event.stopPropagation()">
-      <span style="font-size:12px;color:var(--text-secondary);">Overlap</span>
-      <input type="range" id="overlapSlider" min="0" max="100" value="0" step="1">
-      <span id="overlapOut" style="font-size:12px;min-width:32px;">0%</span>
-    </div>
-    <div class="bar" id="existingBar2" style="justify-content:center;margin-top:16px;">
-      <span>How we engage</span>
-    </div>
-    <div class="step-row">
-      <div class="step-box" id="stepInfluence">
-        <div class="title">Influence</div>
-        <div class="subtitle">LP vs IC seat</div>
+      <div class="venn-legend" id="vennLegend">
+        <span class="legend-item"><span class="swatch venn-a"></span>Portfolio SMEs</span>
+        <span class="legend-item"><span class="swatch venn-b"></span>SME receiving CRS TA</span>
       </div>
-      <div class="step-box" id="stepVehicle">
-        <div class="title">Vehicle</div>
-        <div class="subtitle">Fund vs sidecar</div>
+      <div class="venn-wrap" id="vennWrap">
+        <div class="venn-circle venn-a" id="vennA"></div>
+        <div class="venn-circle venn-b" id="vennB"></div>
       </div>
+      <div class="overlap-row" id="overlapRow" onclick="event.stopPropagation()">
+        <span style="font-size:12px;color:var(--text-secondary);">Overlap</span>
+        <input type="range" id="overlapSlider" min="0" max="100" value="0" step="1">
+        <span id="overlapOut" style="font-size:12px;min-width:36px;">0%</span>
+      </div>
+    </div>
+    <div class="reveal-text" id="engageCommentary">
+      <p>There are scale and efficiency benefits from partnering with an existing activity, but that also means we had little or no say in its design or future management.</p>
+      <p>In that case, we need to understand different ways we can interact with a fund manager to influence our desired outcomes.</p>
+    </div>
+    <div class="group-wrap" id="groupEngage">
+      <div class="group-title">How we engage</div>
+      <div class="step-row">
+        <div class="step-box" id="stepInfluence">
+          <div class="title">Influence</div>
+          <div class="subtitle">LP vs IC seat</div>
+        </div>
+        <div class="step-box" id="stepVehicle">
+          <div class="title">Vehicle</div>
+          <div class="subtitle">Fund vs sidecar</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal-text" id="closingCommentary">
+      <p>Influence is from the perspective of a limited partner (LP), i.e., investor, versus a situation where we design the activity and could require representation and/or veto rights on the investment committee (IC).</p>
+      <p>If there was enough overlap between CRS's goals and the fund's investment strategy, we could invest in the general fund. Another option to exercise more influence would be to invest in something called a sidecar that would be similar to a separately managed account within the fund.</p>
     </div>
   </div>
 
@@ -375,32 +423,49 @@ render();
 window.addEventListener('resize', render);
 
 var existingStep = 0;
-var existingMax = 6;
+var existingMax = 10;
 
 function advanceExisting(){
   existingStep = (existingStep + 1) % (existingMax + 1);
   renderExisting();
+  scrollToCurrentStepExisting();
 }
 
 function renderExisting(){
-  document.getElementById('existingBar1').classList.toggle('show', existingStep >= 1);
+  document.getElementById('groupScreening').classList.toggle('show', existingStep >= 1);
   document.getElementById('stepStrategy').classList.toggle('show', existingStep >= 2);
   document.getElementById('stepFarmer').classList.toggle('show', existingStep >= 3);
-  document.getElementById('stepTA').classList.toggle('show', existingStep >= 4);
-  document.getElementById('vennWrap').classList.toggle('show', existingStep >= 4);
-  document.getElementById('overlapRow').classList.toggle('show', existingStep >= 4);
-  document.getElementById('existingBar2').classList.toggle('show', existingStep >= 5);
-  document.getElementById('stepInfluence').classList.toggle('show', existingStep >= 5);
-  document.getElementById('stepVehicle').classList.toggle('show', existingStep >= 6);
+  document.getElementById('taCommentary1').classList.toggle('show', existingStep >= 4);
+  document.getElementById('taCommentary2').classList.toggle('show', existingStep >= 5);
+  document.getElementById('stepTA').classList.toggle('show', existingStep >= 6);
+  document.getElementById('vennLegend').classList.toggle('show', existingStep >= 6);
+  document.getElementById('vennWrap').classList.toggle('show', existingStep >= 6);
+  document.getElementById('overlapRow').classList.toggle('show', existingStep >= 6);
+  document.getElementById('engageCommentary').classList.toggle('show', existingStep >= 7);
+  document.getElementById('groupEngage').classList.toggle('show', existingStep >= 8);
+  document.getElementById('stepInfluence').classList.toggle('show', existingStep >= 8);
+  document.getElementById('stepVehicle').classList.toggle('show', existingStep >= 9);
+  document.getElementById('closingCommentary').classList.toggle('show', existingStep >= 10);
+}
+
+function scrollToCurrentStepExisting(){
+  var targets = {1:'groupScreening',2:'stepStrategy',3:'stepFarmer',4:'taCommentary1',5:'taCommentary2',6:'stepTA',7:'engageCommentary',8:'groupEngage',9:'stepVehicle',10:'closingCommentary'};
+  var id = targets[existingStep];
+  if (!id) return;
+  setTimeout(function(){
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 60);
 }
 
 function setOverlap(v){
   var wrap = document.getElementById('vennWrap');
   var width = wrap.offsetWidth;
-  var gap = 160 - v * 2.4;        // px between circle edges (negative = overlap); tune by eye
+  var maxDist = 180;              // center-to-center distance at 0% overlap
+  var dist = maxDist * (1 - v / 100); // 0% -> maxDist apart, 100% -> fully coincident
   var center = width / 2;
-  document.getElementById('vennA').style.left = (center - 140 - gap/2) + 'px';
-  document.getElementById('vennB').style.left = (center + gap/2) + 'px';
+  document.getElementById('vennA').style.left = (center - dist/2 - 70) + 'px';
+  document.getElementById('vennB').style.left = (center + dist/2 - 70) + 'px';
   document.getElementById('overlapOut').textContent = Math.round(v) + '%';
 }
 document.getElementById('overlapSlider').addEventListener('input', function(){
@@ -408,6 +473,15 @@ document.getElementById('overlapSlider').addEventListener('input', function(){
 });
 setOverlap(0);
 renderExisting();
+
+document.addEventListener('keydown', function(e){
+  if (e.code !== 'Space' && e.key !== ' ') return;
+  var tag = (e.target && e.target.tagName) || '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  e.preventDefault();
+  if (branch === 'build') advance();
+  else if (branch === 'existing') advanceExisting();
+});
 </script>
 </body>
 </html>
