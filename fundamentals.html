@@ -217,7 +217,26 @@ function render(){
   allLabels.forEach(id=>document.getElementById(id).style.opacity=0);
   (visibleLabels[step]||[]).forEach(id=>document.getElementById(id).style.opacity=1);
 }
-function advance(){ step = (step+1)%8; render(); }
+const scrollTargets = {
+  0: 'stage',
+  1: 'caption1',
+  2: 'row1lbl',
+  3: 'stack1total',
+  4: 'caption2',
+  5: 'row2lbl',
+  6: 'stack2total',
+  7: 'conclusion'
+};
+function advance(){
+  step = (step+1)%8;
+  render();
+  const target = document.getElementById(scrollTargets[step]);
+  if(target){
+    setTimeout(() => {
+      target.scrollIntoView({ behavior: 'smooth', block: step===0 ? 'start' : 'center' });
+    }, 50);
+  }
+}
 const stage = document.getElementById('stage');
 stage.addEventListener('click', advance);
 stage.addEventListener('keydown', e=>{ if(e.code==='Space'){ e.preventDefault(); advance(); } });
