@@ -51,6 +51,10 @@
   .c-coral .th{fill:#c2410c;}
   .c-pink rect{fill:#fdf2f8;stroke:#ec4899;}
   .c-pink .th{fill:#9d174d;}
+  .step{opacity:0;transition:opacity .5s ease;}
+  .step.revealed{opacity:1;}
+  .hint{font-size:12px;color:var(--text-secondary);text-align:center;margin-top:12px;cursor:pointer;user-select:none;}
+  .outline{fill:none;stroke:var(--border-strong);stroke-dasharray:4 4;}
 </style>
 </head>
 <body>
@@ -72,19 +76,24 @@
   <text class="axis" x="160" y="313" text-anchor="end">Independent</text>
   <text class="axis" x="160" y="327" text-anchor="end">strategy</text>
 
-  <g class="c-teal">
+  <rect class="outline" x="170" y="90" width="220" height="140" rx="8"/>
+  <rect class="outline" x="410" y="90" width="220" height="140" rx="8"/>
+  <rect class="outline" x="170" y="250" width="220" height="140" rx="8"/>
+  <rect class="outline" x="410" y="250" width="220" height="140" rx="8"/>
+
+  <g class="c-teal step" data-step="1">
   <rect x="170" y="90" width="220" height="140" rx="8"/>
   <text class="th" x="280" y="150" text-anchor="middle" dominant-baseline="central">Integrated model</text>
   <text class="ts" x="280" y="175" text-anchor="middle" dominant-baseline="central">Heifer Impact Capital</text>
   </g>
 
-  <g class="c-pink">
+  <g class="c-pink step" data-step="2">
   <rect x="410" y="90" width="220" height="140" rx="8"/>
   <text class="th" x="520" y="150" text-anchor="middle" dominant-baseline="central">Contracted model</text>
   <text class="ts" x="520" y="175" text-anchor="middle" dominant-baseline="central">Azure (CRS)</text>
   </g>
 
-  <g class="c-purple">
+  <g class="c-purple step" data-step="3">
   <rect x="170" y="250" width="220" height="140" rx="8"/>
   <text class="th" x="280" y="280" text-anchor="middle" dominant-baseline="central">In-house vehicle</text>
   <text class="ts" x="280" y="306" text-anchor="middle" dominant-baseline="central">Ground Up Investing/Corus</text>
@@ -92,7 +101,7 @@
   <text class="ts" x="280" y="338" text-anchor="middle" dominant-baseline="central">Isidro (CRS)</text>
   </g>
 
-  <g class="c-coral">
+  <g class="c-coral step" data-step="4">
   <rect x="410" y="250" width="220" height="140" rx="8"/>
   <text class="th" x="520" y="280" text-anchor="middle" dominant-baseline="central">Arms-length manager</text>
   <text class="ts" x="520" y="306" text-anchor="middle" dominant-baseline="central">Mercy Corps Ventures</text>
@@ -100,7 +109,36 @@
   <text class="ts" x="520" y="338" text-anchor="middle" dominant-baseline="central">Cordaid (CIMBV)</text>
   </g>
   </svg>
+
+  <p class="hint" id="hint" onclick="advance()">Click or press space to continue &middot; 0 / 4</p>
 </div>
+
+<script>
+var step = 0;
+var total = 4;
+function render() {
+  document.querySelectorAll('.step').forEach(function(g) {
+    g.classList.toggle('revealed', parseInt(g.getAttribute('data-step'), 10) <= step);
+  });
+  var hint = document.getElementById('hint');
+  if (step >= total) {
+    hint.textContent = 'Click or press space to restart';
+  } else {
+    hint.textContent = 'Click or press space to continue \u00b7 ' + step + ' / ' + total;
+  }
+}
+function advance() {
+  step = (step >= total) ? 0 : step + 1;
+  render();
+}
+document.addEventListener('keydown', function(e) {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    advance();
+  }
+});
+render();
+</script>
 
 </body>
 </html>
