@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forest Flavors — INGO Investment Archetypes</title>
+<style>
+  :root{
+    --surface-1:#ffffff;
+    --surface-2:#f3f4f6;
+    --border:#e5e7eb;
+    --border-strong:#d1d5db;
+    --text-primary:#1f2937;
+    --text-secondary:#6b7280;
+    --radius:8px;
+    --arrow:#6b7280;
+  }
+  body{
+    margin:0;
+    padding:32px 16px;
+    background:var(--surface-2);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text-primary);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .card{
+    background:var(--surface-1);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:24px;
+    max-width:760px;
+    width:100%;
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
+    box-sizing:border-box;
+  }
+  h1{font-size:16px;font-weight:600;margin:0 0 4px;}
+  p.caption{font-size:13px;color:var(--text-secondary);margin:0 0 20px;}
+  .back-link{display:inline-block;font-size:12px;color:var(--text-secondary);text-decoration:none;margin:0 0 12px;}
+  .back-link:hover{color:var(--text-primary);text-decoration:underline;}
+  rect{stroke-width:0.5;}
+  .th{font-size:14px;font-weight:600;fill:var(--text-primary);}
+  .ts{font-size:12px;fill:var(--text-secondary);}
+  .axis{font-size:12px;fill:var(--text-secondary);}
+  .c-teal rect{fill:#e6f7f0;stroke:#10b981;}
+  .c-teal .th{fill:#047857;}
+  .c-purple rect{fill:#f1edfc;stroke:#8b5cf6;}
+  .c-purple .th{fill:#6d28d9;}
+  .c-coral rect{fill:#fdece5;stroke:#f97316;}
+  .c-coral .th{fill:#c2410c;}
+  .c-pink rect{fill:#fdf2f8;stroke:#ec4899;}
+  .c-pink .th{fill:#9d174d;}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <a class="back-link" href="index.html">&larr; Back to contents</a>
+  <h1>INGO investment archetypes</h1>
+  <p class="caption">Forest Flavors, CRS Innovative Finance &mdash; grouped by how investing relates to programming and who manages the vehicle</p>
+
+  <svg width="100%" viewBox="0 0 680 410" role="img">
+  <title>2x2 grid of INGO and CRS impact-investing archetypes</title>
+  <desc>Two axes: whether investing is tied to existing programming or an independent strategy, and whether the vehicle is self-managed or managed by a third party. Top-left quadrant, tied to programming and self-managed, is Integrated model containing Heifer. Top-right quadrant, tied to programming and third-party managed, is Contracted model containing Azure. Bottom-left quadrant, independent strategy and self-managed, is In-house vehicle containing Ground Up Investing/Corus, AV Ventures, and Isidro. Bottom-right quadrant, independent strategy and third-party managed, is Arms-length manager containing Mercy Corps Ventures, One Acre Ventures, and Cordaid.</desc>
+
+  <text class="axis" x="280" y="78" text-anchor="middle">Self-managed</text>
+  <text class="axis" x="520" y="78" text-anchor="middle">Third-party managed</text>
+
+  <text class="axis" x="160" y="153" text-anchor="end">Tied to</text>
+  <text class="axis" x="160" y="167" text-anchor="end">programming</text>
+  <text class="axis" x="160" y="313" text-anchor="end">Independent</text>
+  <text class="axis" x="160" y="327" text-anchor="end">strategy</text>
+
+  <g class="c-teal">
+  <rect x="170" y="90" width="220" height="140" rx="8"/>
+  <text class="th" x="280" y="150" text-anchor="middle" dominant-baseline="central">Integrated model</text>
+  <text class="ts" x="280" y="175" text-anchor="middle" dominant-baseline="central">Heifer Impact Capital</text>
+  </g>
+
+  <g class="c-pink">
+  <rect x="410" y="90" width="220" height="140" rx="8"/>
+  <text class="th" x="520" y="150" text-anchor="middle" dominant-baseline="central">Contracted model</text>
+  <text class="ts" x="520" y="175" text-anchor="middle" dominant-baseline="central">Azure (CRS)</text>
+  </g>
+
+  <g class="c-purple">
+  <rect x="170" y="250" width="220" height="140" rx="8"/>
+  <text class="th" x="280" y="280" text-anchor="middle" dominant-baseline="central">In-house vehicle</text>
+  <text class="ts" x="280" y="306" text-anchor="middle" dominant-baseline="central">Ground Up Investing/Corus</text>
+  <text class="ts" x="280" y="322" text-anchor="middle" dominant-baseline="central">AV Ventures (ACDI/VOCA)</text>
+  <text class="ts" x="280" y="338" text-anchor="middle" dominant-baseline="central">Isidro (CRS)</text>
+  </g>
+
+  <g class="c-coral">
+  <rect x="410" y="250" width="220" height="140" rx="8"/>
+  <text class="th" x="520" y="280" text-anchor="middle" dominant-baseline="central">Arms-length manager</text>
+  <text class="ts" x="520" y="306" text-anchor="middle" dominant-baseline="central">Mercy Corps Ventures</text>
+  <text class="ts" x="520" y="322" text-anchor="middle" dominant-baseline="central">One Acre Ventures</text>
+  <text class="ts" x="520" y="338" text-anchor="middle" dominant-baseline="central">Cordaid (CIMBV)</text>
+  </g>
+  </svg>
+</div>
+
+</body>
+</html>
