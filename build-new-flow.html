@@ -241,10 +241,13 @@ body {
 .reveal-text.show { opacity: 1; max-height: 420px; margin-top: 16px; }
 .reveal-text p { margin: 0 0 8px; }
 .reveal-text p:last-child { margin-bottom: 0; }
+.back-link{display:inline-block;font-size:12px;color:var(--text-secondary);text-decoration:none;margin:0 0 12px;}
+.back-link:hover{color:var(--text-primary);text-decoration:underline;}
 </style>
 </head>
 <body>
 <div class="stage">
+  <a class="back-link" href="index.html">&larr; Back to contents</a>
   <div class="decision-row">
     <div class="decision-card" id="cardBuild" onclick="selectBranch('build')">
       <div class="title">Build new</div>
