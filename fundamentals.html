@@ -13,6 +13,7 @@
     --text-secondary: #6b7280;
     --radius: 8px;
     --arrow: #6b7280;
+    --ta: #4d7c5a;
   }
   body {
     margin: 0;
@@ -68,7 +69,10 @@
   .picked1 { fill: none; stroke: var(--text-primary); stroke-width: 1.5; transition: x 0.8s ease, y 0.8s ease, width 0.8s ease, height 0.8s ease, rx 0.8s ease; }
   .picked2 { fill: none; stroke: var(--text-primary); stroke-width: 1.2; transition: x 0.8s ease, y 0.8s ease, width 0.8s ease, height 0.8s ease, rx 0.8s ease; }
   .lbl { opacity: 0; transition: opacity 0.5s ease; font-size: 13px; fill: var(--text-secondary); }
-  .dotA, .dotB { fill: none; stroke: var(--text-primary); stroke-width: 1; transition: cx 0.8s ease, cy 0.8s ease, r 0.8s ease, opacity 0.6s ease; }
+  .dotA, .dotB { fill: none; stroke: var(--text-primary); stroke-width: 1; transition: cx 0.8s ease, cy 0.8s ease, r 0.8s ease, opacity 0.6s ease, fill 0.6s ease; }
+  .ta-tinted { fill: var(--ta); stroke: var(--ta); }
+  #taLegend { opacity: 0; transition: opacity 0.5s ease; font-size: 13px; color: var(--text-secondary); text-align: center; margin: 10px auto 0; }
+  #taLegend .ta-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--ta); margin-right: 6px; vertical-align: middle; }
   #Adots, #Bdots, #outlineA, #outlineB { opacity: 0; transition: opacity 0.6s ease; }
   .commentary-wrap { display: grid; margin-bottom: 10px; }
   .commentary-wrap p { grid-area: 1 / 1; opacity: 0; transition: opacity 0.5s ease; font-size: 14px; line-height: 1.6; color: var(--text-secondary); text-align: center; max-width: 560px; margin: 0 auto; }
@@ -403,10 +407,10 @@
     <div class="instruction">Click anywhere, or press space, to advance</div>
 
     <div id="stage2" tabindex="0">
-      <h2 class="sr-only">Two funnels, one for an investment-led approach and one for a technical-assistance-led approach, that fill with dots representing companies and narrow from screening to evaluation to closed loans, with commentary above narrating each stage before switching from one funnel to the other</h2>
+      <h2 class="sr-only">Two funnels, one for an investment-led approach and one for a technical-assistance-led approach, that fill with dots representing companies and narrow from screening to evaluation to closed loans, with commentary above narrating each stage before switching from one funnel to the other. Green fill marks companies that receive technical assistance: in the investment approach, only the 10 closed loans after closing; in the technical assistance approach, all 600 companies before evaluation.</h2>
       <div class="commentary-wrap">
-        <p id="commentBlock1"><span id="s1">An average fund screens around 300 companies to build its pipeline.</span> <span id="s2">Of those, about 50 get evaluated in real depth.</span> <span id="s3">And roughly 10 actually close as loans.</span> <span id="s4">Now compare that to sourcing pipeline through an existing technical assistance activity.</span></p>
-        <p id="commentBlock2"><span id="s5">A conservative estimate is that it takes twice as many companies to start — around 600.</span> <span id="s6">About 100 of those get evaluated in depth.</span> <span id="s7">And the same 10 close as loans — twice the screening effort for the same result.</span></p>
+        <p id="commentBlock1"><span id="s1">An average fund screens around 300 companies to build its pipeline.</span> <span id="s2">Of those, about 50 get evaluated in real depth.</span> <span id="s3">And roughly 10 actually close as loans.</span> <span id="s3b">Technical assistance comes after the loan closes, and goes only to those 10.</span> <span id="s4">Now compare that to sourcing pipeline through an existing technical assistance activity.</span></p>
+        <p id="commentBlock2"><span id="s5">A conservative estimate is that it takes twice as many companies to start — around 600.</span> <span id="s5b">Here, technical assistance comes first: all 600 go through it before any are evaluated for a loan.</span> <span id="s6">About 100 of those get evaluated in depth.</span> <span id="s7">And the same 10 close as loans — twice the screening effort for the same result.</span></p>
       </div>
       <div class="funnel-headers">
         <div class="funnel-hdr" id="hdrA">Investment approach</div>
@@ -420,6 +424,7 @@
         <text id="labelA3" class="lbl" x="180" y="284" text-anchor="middle">10 loans closed</text>
         <text id="labelB3" class="lbl" x="500" y="284" text-anchor="middle">10 loans closed</text>
       </svg>
+      <div id="taLegend"><span class="ta-dot"></span>received TA</div>
       <p id="finalNote">An investment approach starts by looking for viable deals; a technical assistance approach starts by looking for businesses that need capacity building before they're viable deals.</p>
     </div>
   </section>
@@ -697,18 +702,20 @@ stage.focus();
     trayY: 300, trayXMin: 420, trayXMax: 580,
     total: 600, evalCount: 100, closeCount: 10, r0: 3.5
   });
-  const gAstateByStep = [0,0,1,2,2,2,2,2,2];
-  const gBstateByStep = [0,0,0,0,0,0,1,2,2];
-  const capLabels2 = ['commentBlock1','commentBlock2','s1','s2','s3','s4','s5','s6','s7','labelA3','labelB3','finalNote'];
+  const gAstateByStep = [0,0,1,2,2,2,2,2,2,2,2];
+  const gBstateByStep = [0,0,0,0,0,0,0,0,1,2,2];
+  const capLabels2 = ['commentBlock1','commentBlock2','s1','s2','s3','s3b','s4','s5','s5b','s6','s7','labelA3','labelB3','finalNote','taLegend'];
   const visibleLabels2 = {
     1: ['commentBlock1','s1'],
     2: ['commentBlock1','s1','s2'],
     3: ['commentBlock1','s1','s2','s3','labelA3'],
-    4: ['commentBlock1','s1','s2','s3','s4','labelA3'],
-    5: ['commentBlock2','s5','labelA3'],
-    6: ['commentBlock2','s5','s6','labelA3'],
-    7: ['commentBlock2','s5','s6','s7','labelA3','labelB3'],
-    8: ['commentBlock2','s5','s6','s7','labelA3','labelB3','finalNote']
+    4: ['commentBlock1','s1','s2','s3','s3b','labelA3','taLegend'],
+    5: ['commentBlock1','s1','s2','s3','s3b','s4','labelA3','taLegend'],
+    6: ['commentBlock2','s5','labelA3','taLegend'],
+    7: ['commentBlock2','s5','s5b','labelA3','taLegend'],
+    8: ['commentBlock2','s5','s5b','s6','labelA3','taLegend'],
+    9: ['commentBlock2','s5','s5b','s6','s7','labelA3','labelB3','taLegend'],
+    10: ['commentBlock2','s5','s5b','s6','s7','labelA3','labelB3','taLegend','finalNote']
   };
 
   let step2 = 0;
@@ -716,16 +723,18 @@ stage.focus();
     document.getElementById('Adots').style.opacity = step2>=1 ? 1 : 0;
     document.getElementById('outlineA').style.opacity = step2>=1 ? 1 : 0;
     document.getElementById('hdrA').style.opacity = step2>=1 ? 1 : 0;
-    document.getElementById('Bdots').style.opacity = step2>=5 ? 1 : 0;
-    document.getElementById('outlineB').style.opacity = step2>=5 ? 1 : 0;
-    document.getElementById('hdrB').style.opacity = step2>=5 ? 1 : 0;
+    document.getElementById('Bdots').style.opacity = step2>=6 ? 1 : 0;
+    document.getElementById('outlineB').style.opacity = step2>=6 ? 1 : 0;
+    document.getElementById('hdrB').style.opacity = step2>=6 ? 1 : 0;
     renderFunnel(circlesA, gAstateByStep[step2], 3.5, 3.5, 3.5);
     renderFunnel(circlesB, gBstateByStep[step2], 3.5, 3.5, 3.5);
+    circlesA.forEach(d=>d.el.classList.toggle('ta-tinted', step2>=4 && d.isClose));
+    circlesB.forEach(d=>d.el.classList.toggle('ta-tinted', step2>=7));
     capLabels2.forEach(id=>document.getElementById(id).style.opacity=0);
     (visibleLabels2[step2]||[]).forEach(id=>document.getElementById(id).style.opacity=1);
   }
   function advance2(){
-    step2 = (step2+1)%9;
+    step2 = (step2+1)%11;
     render2();
     if(step2===0){
       document.getElementById('stage2').scrollIntoView({ behavior: 'smooth', block: 'start' });
