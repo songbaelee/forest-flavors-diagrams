@@ -91,12 +91,26 @@
   }
   .back-link{display:inline-block;font-size:12px;color:var(--text-secondary);text-decoration:none;margin:0 0 12px;}
   .back-link:hover{color:var(--text-primary);text-decoration:underline;}
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px 24px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+  .tab { appearance: none; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 8px 2px 10px; font: inherit; font-size: 14px; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+  .tab:hover { color: var(--text-primary); }
+  .tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+  section[hidden] { display: none; }
+  .next-link { text-align: right; margin: 8px 0 0; }
+  .next-link a { font-size: 14px; color: var(--text-primary); text-decoration: none; }
+  .next-link a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
 <div class="page">
   <a class="back-link" href="index.html">&larr; Back to contents</a>
   <h1>Reading the market before the deal</h1>
+
+  <div class="tabs" id="tabBar" role="tablist">
+    <button type="button" class="tab" data-tab="segmentation" role="tab">Segmentation</button>
+    <button type="button" class="tab" data-tab="banks-vs-funds" role="tab">Banks vs. funds</button>
+    <button type="button" class="tab" data-tab="pipeline" role="tab">Pipeline</button>
+  </div>
 
   <section id="segmentation">
     <h2>Segmentation</h2>
@@ -124,6 +138,7 @@
         <text id="conclusion" class="lbl" x="340" y="945" text-anchor="middle">Now it'll take two loan officers to manage the same $10 million volume</text>
       </svg>
     </div>
+    <p class="next-link"><a href="#banks-vs-funds" class="next-tab-link">Next: Banks vs. funds &rarr;</a></p>
   </section>
 
   <section id="banks-vs-funds">
@@ -398,6 +413,7 @@
     </g>
     </svg>
     </div>
+    <p class="next-link"><a href="#pipeline" class="next-tab-link">Next: Pipeline &rarr;</a></p>
   </section>
 
   <section id="pipeline">
@@ -804,6 +820,45 @@ const stage3 = document.getElementById('stage3');
 stage3.addEventListener('click', advance3);
 stage3.addEventListener('keydown', e=>{ if(e.code==='Space'){ e.preventDefault(); advance3(); } });
 stage3.focus();
+})();
+</script>
+<script>
+(function(){
+  const TABS = ['segmentation','banks-vs-funds','pipeline'];
+
+  function showTab(id){
+    if(!TABS.includes(id)) id = TABS[0];
+    TABS.forEach(t=>{ document.getElementById(t).hidden = (t !== id); });
+    document.querySelectorAll('.tab').forEach(btn=>{
+      btn.classList.toggle('active', btn.dataset.tab === id);
+    });
+  }
+
+  function activateFromHash(){
+    showTab(location.hash.slice(1));
+  }
+
+  document.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(location.hash.slice(1) === btn.dataset.tab){
+        showTab(btn.dataset.tab);
+        window.scrollTo(0,0);
+      } else {
+        location.hash = btn.dataset.tab;
+      }
+    });
+  });
+
+  document.querySelectorAll('.next-tab-link').forEach(a=>{
+    a.addEventListener('click', e=>{ e.stopPropagation(); });
+  });
+
+  window.addEventListener('hashchange', ()=>{
+    activateFromHash();
+    window.scrollTo(0,0);
+  });
+
+  activateFromHash();
 })();
 </script>
 </body>
