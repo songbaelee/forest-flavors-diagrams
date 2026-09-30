@@ -188,17 +188,49 @@
 </div>
 
 <script>
+function ganttToText(gantt) {
+  // Grid column 2 = Oct 2026 ... column 16 = Dec 2027
+  var mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function colToMonth(col) {
+    var idx = 9 + (col - 2);            // 9 = Oct
+    return { m: mo[idx % 12], y: 2026 + Math.floor(idx / 12) };
+  }
+  function range(style) {
+    var match = /grid-column:\s*(\d+)\s*\/\s*(\d+)/.exec(style || '');
+    if (!match) return '';
+    var s = colToMonth(+match[1]), e = colToMonth(+match[2] - 1);
+    if (s.m === e.m && s.y === e.y) return s.m + ' ' + s.y;
+    if (s.y === e.y) return s.m + '–' + e.m + ' ' + e.y;
+    return s.m + ' ' + s.y + ' – ' + e.m + ' ' + e.y;
+  }
+  var out = [], current = null;
+  Array.prototype.forEach.call(gantt.children, function(child) {
+    if (child.classList.contains('sec')) {
+      if (current) out.push(current.join('\n'));
+      current = [child.textContent.trim()];
+    } else if (child.classList.contains('task') && current) {
+      var bar = child.nextElementSibling;
+      var dates = bar && bar.classList.contains('bar') ? range(bar.getAttribute('style')) : '';
+      current.push('- ' + child.textContent.trim() + ': ' + dates);
+    }
+  });
+  if (current) out.push(current.join('\n'));
+  return out.join('\n\n');
+}
+
 document.getElementById('download-text-link').addEventListener('click', function(e) {
   e.preventDefault();
   var blocks = [];
   document.querySelectorAll('.card').forEach(function(card) {
-    card.querySelectorAll('h1, h2, p.caption, p.body-text, ul.body-list').forEach(function(el) {
+    card.querySelectorAll('h1, h2, p.caption, p.body-text, ul.body-list, .gantt').forEach(function(el) {
       if (el.tagName === 'H1' || el.tagName === 'H2') {
         blocks.push(el.textContent.trim().toUpperCase());
       } else if (el.tagName === 'UL') {
         var items = [];
         el.querySelectorAll('li').forEach(function(li) { items.push('- ' + li.textContent.trim()); });
         blocks.push(items.join('\n'));
+      } else if (el.classList.contains('gantt')) {
+        blocks.push(ganttToText(el));
       } else {
         blocks.push(el.textContent.trim());
       }
