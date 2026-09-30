@@ -49,16 +49,22 @@
   p.body-text + p.body-text{margin-top:12px;}
   #download-text-link:hover{color:var(--text-primary);text-decoration:underline;}
   .gantt-wrap{overflow-x:auto;margin-top:12px;}
-  .gantt{display:grid;grid-template-columns:230px repeat(15,minmax(28px,1fr));min-width:680px;font-size:12px;row-gap:6px;
-    /* Dec 2026 / Jan 2027 divider at the left edge of column 5 (230px + 3 of 15 month columns).
-       Background % resolves against width minus the 1px line, hence 229px rather than 230px. */
-    background:linear-gradient(var(--border-strong),var(--border-strong)) no-repeat;
-    background-size:1px 100%;background-position:calc(230px + (100% - 229px) / 5) 0;}
+  .gantt{--label-w:230px;display:grid;grid-template-columns:var(--label-w) repeat(15,minmax(28px,1fr));min-width:680px;font-size:12px;row-gap:6px;position:relative;z-index:0;
+    /* Layer 1: card-colored strip under the pinned label column; script sets --gantt-scroll so it
+       follows horizontal scrolling and hides the divider in the gaps between label cells.
+       Layer 2: Dec 2026 / Jan 2027 divider at the left edge of column 5 (label column + 3 of 15
+       month columns). Background % resolves against width minus the 1px line, hence the +1px. */
+    background:
+      linear-gradient(var(--surface-1),var(--surface-1)) var(--gantt-scroll,0px) 0 / var(--label-w) 100% no-repeat,
+      linear-gradient(var(--border-strong),var(--border-strong)) calc(var(--label-w) + (100% - var(--label-w) + 1px) / 5) 0 / 1px 100% no-repeat;}
   .gantt .yr{font-weight:600;color:var(--text-primary);text-align:center;border-bottom:1px solid var(--border-strong);padding-bottom:4px;}
   .gantt .yr + .yr{border-left:1px solid var(--border-strong);}
   .gantt .mo{color:var(--text-secondary);text-align:center;font-size:11px;padding:2px 0 6px;}
   .gantt .sec{grid-column:1 / -1;font-weight:600;color:var(--text-primary);font-size:13px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);}
-  .gantt .task{grid-column:1;color:var(--text-secondary);line-height:1.35;padding-right:10px;align-self:center;}
+  .gantt .task{grid-column:1;color:var(--text-secondary);line-height:1.35;padding-right:10px;align-self:stretch;display:flex;align-items:center;}
+  /* Label column stays pinned while the chart scrolls; opaque so bars pass underneath */
+  .gantt .corner,.gantt .task{position:sticky;left:0;z-index:1;background:var(--surface-1);}
+  .gantt .sec > span{position:sticky;left:0;display:inline-block;padding-right:10px;background:var(--surface-1);}
   .gantt .bar{height:18px;border-radius:4px;align-self:center;border:1px solid;}
   .gantt .bar.grant{background:#faeeda;border-color:#b7791f;}
   .gantt .bar.invest{background:#e6f1fb;border-color:#185FA5;}
@@ -74,6 +80,67 @@
   .travel-note h3{margin:0 0 6px;}
   .travel-note a{color:#185FA5;}
   h3.diagram-label{font-size:12px;font-weight:600;color:var(--text-secondary);margin:20px 0 4px;}
+
+  /* Spectrum diagram: horizontal version from 600px up, vertical version below */
+  .spectrum-v{display:none;}
+  @media (max-width:599px){ .spectrum-h{display:none;} .spectrum-v{display:block;} }
+
+  /* Tappable diagram boxes */
+  .tap{cursor:pointer;outline:none;}
+  .tap .box{transition:stroke-width .15s ease;}
+  .tap:hover .box,.tap:focus-visible .box{stroke-width:1.4;}
+  .tap .ring{fill:none;stroke:#185FA5;stroke-width:2;opacity:0;}
+  .tap:focus-visible .ring{opacity:1;}
+  .tap .cue{font-family:sans-serif;font-size:10px;fill:var(--text-secondary);}
+
+  /* Highlight for the passage a diagram box jumps to */
+  @keyframes flash-bg{0%,40%{background-color:#e6f1fb;box-shadow:0 0 0 6px #e6f1fb;}100%{background-color:transparent;box-shadow:0 0 0 6px transparent;}}
+  @keyframes flash-card{0%,40%{background-color:#e6f1fb;}100%{background-color:var(--surface-1);}}
+  .flash{animation:flash-bg 1.5s ease-out;border-radius:4px;}
+  .card.flash{animation-name:flash-card;border-radius:12px;}
+  .flash-static{background-color:#e6f1fb;box-shadow:0 0 0 6px #e6f1fb;border-radius:4px;}
+  .card.flash-static{box-shadow:0 1px 3px rgba(0,0,0,0.06);border-radius:12px;}
+  [tabindex="-1"]:focus{outline:none;}
+
+  /* Combination approach flow graphic */
+  .flow{margin:16px 0 4px;}
+  .flow svg{display:block;width:100%;margin:0 auto;}
+  .flow-h{max-width:560px;}
+  .flow-v{max-width:320px;display:none !important;}
+  @media (max-width:599px){ .flow-h{display:none !important;} .flow-v{display:block !important;} }
+  .flow .fl-title{font-family:sans-serif;font-size:14px;font-weight:500;fill:var(--text-primary);}
+  .flow .fl-sub{font-family:sans-serif;font-size:12px;fill:var(--text-secondary);}
+  .flow .fl-arrow{fill:none;stroke:var(--arrow);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+  /* Entrance animation: only applies once JS arms it (.flow-armed), so the graphic is fully visible without JS */
+  .flow-armed .fl-step{opacity:0;transition:opacity .3s ease;}
+  .flow-armed .fl-line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .3s ease;}
+  .flow-armed .fl-head{transition-duration:.15s;}
+  .flow-armed.flow-play .fl-step{opacity:1;}
+  .flow-armed.flow-play .fl-line{stroke-dashoffset:0;}
+  .flow .d2{transition-delay:.25s;} .flow .d3{transition-delay:.5s;} .flow .d4{transition-delay:.45s;}
+  .flow .d5{transition-delay:.7s;} .flow .d6{transition-delay:.95s;} .flow .d7{transition-delay:.9s;}
+
+  /* Gantt on phones: narrower label column, swipe hint and right-edge fade */
+  .gantt-frame{position:relative;}
+  .gantt-frame::after{content:"";position:absolute;top:0;right:0;bottom:0;width:36px;pointer-events:none;background:linear-gradient(to right,transparent,var(--surface-1));opacity:0;}
+  .gantt-hint{display:none;font-size:11px;color:var(--text-secondary);text-align:right;margin:8px 0 -4px;}
+  @media (max-width:599px){
+    .gantt{--label-w:130px;min-width:550px;}
+    .gantt-hint.show{display:block;}
+    .gantt-frame.fade::after{opacity:1;}
+  }
+
+  /* Today marker (added by script; hidden outside Oct 2026 - Dec 2027) */
+  .gantt.has-today .mo{padding-top:18px;}
+  .gantt .today-line{position:absolute;bottom:0;width:0;border-left:1.5px solid var(--text-secondary);margin-left:-0.75px;z-index:-1;pointer-events:none;}
+  .gantt .today-label{position:absolute;z-index:-1;transform:translateX(-50%);font-size:10px;font-weight:600;line-height:14px;color:var(--text-primary);white-space:nowrap;pointer-events:none;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .tap .box{transition:none;}
+    .flow-armed .fl-step{opacity:1;transition:none;}
+    .flow-armed .fl-line{stroke-dashoffset:0;transition:none;}
+  }
 </style>
 </head>
 <body>
@@ -88,9 +155,9 @@
   <p class="caption">Forest Flavors, CRS Innovative Finance</p>
   <p class="body-text" style="margin-top:12px;">This page lays out the range of relationships CRS could have with a lending partner. At the left are facilities CRS sponsors and runs itself. At the right are arrangements where CRS is one investor among several. The columns are clusters of real or proposed examples rather than sharp categories. We focus on the two middle columns, Mandate and Aligned, where CRS works through an outside partner but can still shape how the facility serves its programs.</p>
   <h3 class="diagram-label">Where partners sit: control to leverage</h3>
-<svg width="100%" viewBox="0 0 680 306" role="img">
-<title>Partner landscape from control to leverage</title>
-<desc>A spectrum diagram from control to leverage with four columns: CRS-sponsored (Isidro, Azure), Mandate (Miarakap, Agri Frontier), Aligned (Aceli wholesale facility, FASA sidecar, both proposed), and Indirect (Cordaid, Silverlands). An enabling layer beneath all four columns: Vula (SME matching, program-funded pilot).</desc>
+<svg class="spectrum-h" width="100%" viewBox="0 0 680 306" role="group" aria-labelledby="spec-h-title" aria-describedby="spec-h-desc">
+<title id="spec-h-title">Partner landscape from control to leverage</title>
+<desc id="spec-h-desc">A spectrum diagram from control to leverage with four columns: CRS-sponsored (Isidro, Azure), Mandate (Miarakap, Agri Frontier), Aligned (Aceli wholesale facility, FASA sidecar, both proposed), and Indirect (Cordaid, Silverlands). An enabling layer beneath all four columns: Vula (SME matching, program-funded pilot).</desc>
 <defs><marker id="arrow3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 
 <text x="40" y="30" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)" text-anchor="start">Control</text>
@@ -110,23 +177,39 @@
 
 <rect x="192" y="70" width="138" height="180" rx="12" fill="none" stroke="var(--border)" stroke-width="0.5"/>
 <text x="261" y="95" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Mandate</text>
-<rect x="204" y="112" width="114" height="58" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.5"/>
+<g class="tap" tabindex="0" role="link" aria-label="Jump to Miarakap discussion" data-target="miarakap-text">
+<rect class="ring" x="201" y="109" width="120" height="64" rx="10"/>
+<rect class="box" x="204" y="112" width="114" height="58" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.5"/>
 <text x="261" y="130" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Miarakap</text>
 <text x="261" y="154" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Prior engagement</text>
-<rect x="204" y="182" width="114" height="58" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.5"/>
+<text class="cue" x="313" y="123" text-anchor="end">&#8595;</text>
+</g>
+<g class="tap" tabindex="0" role="link" aria-label="Jump to Agri Frontiers discussion" data-target="agri-frontiers-item">
+<rect class="ring" x="201" y="179" width="120" height="64" rx="10"/>
+<rect class="box" x="204" y="182" width="114" height="58" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.5"/>
 <text x="261" y="200" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Agri Frontier</text>
 <text x="261" y="224" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Early discussions</text>
+<text class="cue" x="313" y="193" text-anchor="end">&#8595;</text>
+</g>
 
 <rect x="344" y="70" width="138" height="180" rx="12" fill="none" stroke="var(--border)" stroke-width="0.5"/>
 <text x="413" y="95" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Aligned</text>
-<rect x="356" y="112" width="114" height="58" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="0.5"/>
+<g class="tap" tabindex="0" role="link" aria-label="Jump to Aceli discussion" data-target="aceli-section">
+<rect class="ring" x="353" y="109" width="120" height="64" rx="10"/>
+<rect class="box" x="356" y="112" width="114" height="58" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="0.5"/>
 <text x="413" y="127" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Aceli</text>
 <text x="413" y="147" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Wholesale facility</text>
 <text x="413" y="161" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">(proposed)</text>
-<rect x="356" y="182" width="114" height="58" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="0.5"/>
+<text class="cue" x="465" y="123" text-anchor="end">&#8595;</text>
+</g>
+<g class="tap" tabindex="0" role="link" aria-label="Jump to I&amp;P and FASA discussion" data-target="ip-item">
+<rect class="ring" x="353" y="179" width="120" height="64" rx="10"/>
+<rect class="box" x="356" y="182" width="114" height="58" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="0.5"/>
 <text x="413" y="197" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">FASA</text>
 <text x="413" y="217" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Sidecar</text>
 <text x="413" y="231" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">(proposed)</text>
+<text class="cue" x="465" y="193" text-anchor="end">&#8595;</text>
+</g>
 
 <rect x="496" y="70" width="138" height="180" rx="12" fill="none" stroke="var(--border)" stroke-width="0.5"/>
 <text x="565" y="95" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Indirect</text>
@@ -137,8 +220,85 @@
 <text x="565" y="200" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Silverlands</text>
 <text x="565" y="224" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Reserve fund</text>
 
-<rect x="40" y="268" width="594" height="28" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.5"/>
+<g class="tap" tabindex="0" role="link" aria-label="Jump to Vula discussion" data-target="vula-text">
+<rect class="ring" x="37" y="265" width="600" height="34" rx="10"/>
+<rect class="box" x="40" y="268" width="594" height="28" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.5"/>
 <text x="337" y="282" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Enabling layer: <tspan font-weight="500" fill="var(--text-primary)">Vula</tspan> (SME matching, program-funded pilot)</text>
+<text class="cue" x="624" y="282" text-anchor="end" dominant-baseline="central">&#8595;</text>
+</g>
+</svg>
+<svg class="spectrum-v" width="100%" viewBox="0 0 320 584" role="group" aria-labelledby="spec-v-title" aria-describedby="spec-v-desc">
+<title id="spec-v-title">Partner landscape from control to leverage</title>
+<desc id="spec-v-desc">A spectrum diagram from control to leverage with four columns: CRS-sponsored (Isidro, Azure), Mandate (Miarakap, Agri Frontier), Aligned (Aceli wholesale facility, FASA sidecar, both proposed), and Indirect (Cordaid, Silverlands). An enabling layer beneath all four columns: Vula (SME matching, program-funded pilot).</desc>
+<defs><marker id="arrow3v" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<text x="4" y="16" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Control</text>
+<line x1="14" y1="26" x2="14" y2="506" stroke="var(--arrow)" stroke-width="1" marker-start="url(#arrow3v)" marker-end="url(#arrow3v)"/>
+<text x="4" y="526" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Leverage</text>
+
+<rect x="26" y="148" width="292" height="236" rx="16" fill="none" stroke="var(--border-strong)" stroke-width="1" stroke-dasharray="4 4"/>
+
+<rect x="34" y="34" width="276" height="102" rx="12" fill="none" stroke="var(--border)" stroke-width="0.5"/>
+<text x="172" y="56" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">CRS-sponsored</text>
+<rect x="42" y="68" width="126" height="58" rx="8" fill="#e1f5ee" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="105" y="86" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Isidro</text>
+<text x="105" y="110" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Direct lending</text>
+<rect x="176" y="68" width="126" height="58" rx="8" fill="#e1f5ee" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="239" y="86" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Azure</text>
+<text x="239" y="110" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">CRS sponsored</text>
+
+<rect x="34" y="156" width="276" height="102" rx="12" fill="none" stroke="var(--border)" stroke-width="0.5"/>
+<text x="172" y="178" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Mandate</text>
+<g class="tap" tabindex="0" role="link" aria-label="Jump to Miarakap discussion" data-target="miarakap-text">
+<rect class="ring" x="39" y="187" width="132" height="64" rx="10"/>
+<rect class="box" x="42" y="190" width="126" height="58" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.5"/>
+<text x="105" y="208" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Miarakap</text>
+<text x="105" y="232" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Prior engagement</text>
+<text class="cue" x="163" y="201" text-anchor="end">&#8595;</text>
+</g>
+<g class="tap" tabindex="0" role="link" aria-label="Jump to Agri Frontiers discussion" data-target="agri-frontiers-item">
+<rect class="ring" x="173" y="187" width="132" height="64" rx="10"/>
+<rect class="box" x="176" y="190" width="126" height="58" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.5"/>
+<text x="239" y="208" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Agri Frontier</text>
+<text x="239" y="232" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Early discussions</text>
+<text class="cue" x="297" y="201" text-anchor="end">&#8595;</text>
+</g>
+
+<rect x="34" y="274" width="276" height="102" rx="12" fill="none" stroke="var(--border)" stroke-width="0.5"/>
+<text x="172" y="296" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Aligned</text>
+<g class="tap" tabindex="0" role="link" aria-label="Jump to Aceli discussion" data-target="aceli-section">
+<rect class="ring" x="39" y="305" width="132" height="64" rx="10"/>
+<rect class="box" x="42" y="308" width="126" height="58" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="0.5"/>
+<text x="105" y="323" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Aceli</text>
+<text x="105" y="343" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Wholesale facility</text>
+<text x="105" y="357" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">(proposed)</text>
+<text class="cue" x="163" y="319" text-anchor="end">&#8595;</text>
+</g>
+<g class="tap" tabindex="0" role="link" aria-label="Jump to I&amp;P and FASA discussion" data-target="ip-item">
+<rect class="ring" x="173" y="305" width="132" height="64" rx="10"/>
+<rect class="box" x="176" y="308" width="126" height="58" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="0.5"/>
+<text x="239" y="323" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">FASA</text>
+<text x="239" y="343" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Sidecar</text>
+<text x="239" y="357" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">(proposed)</text>
+<text class="cue" x="297" y="319" text-anchor="end">&#8595;</text>
+</g>
+
+<rect x="34" y="396" width="276" height="102" rx="12" fill="none" stroke="var(--border)" stroke-width="0.5"/>
+<text x="172" y="418" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Indirect</text>
+<rect x="42" y="430" width="126" height="58" rx="8" fill="#faece7" stroke="#993C1D" stroke-width="0.5"/>
+<text x="105" y="448" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Cordaid</text>
+<text x="105" y="472" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">NGO managed</text>
+<rect x="176" y="430" width="126" height="58" rx="8" fill="#faece7" stroke="#993C1D" stroke-width="0.5"/>
+<text x="239" y="448" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="14" font-weight="500" fill="var(--text-primary)">Silverlands</text>
+<text x="239" y="472" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Reserve fund</text>
+
+<g class="tap" tabindex="0" role="link" aria-label="Jump to Vula discussion" data-target="vula-text">
+<rect class="ring" x="1" y="533" width="318" height="50" rx="10"/>
+<rect class="box" x="4" y="536" width="312" height="44" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="0.5"/>
+<text x="160" y="551" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">Enabling layer: <tspan font-weight="500" fill="var(--text-primary)">Vula</tspan></text>
+<text x="160" y="567" text-anchor="middle" dominant-baseline="central" font-family="sans-serif" font-size="12" fill="var(--text-secondary)">(SME matching, program-funded pilot)</text>
+<text class="cue" x="309" y="547" text-anchor="end">&#8595;</text>
+</g>
 </svg>
 </div>
 
@@ -155,15 +315,63 @@
     <li>Miarakap is a fund manager and advisor in Madagascar that CRS has worked with in the past.</li>
     <li>Aceli, a grant-based incentive activity, is raising a new wholesale debt facility in Uganda.</li>
   </ul>
+  <div class="flow">
+    <svg class="flow-h" viewBox="0 0 560 84" role="img" aria-labelledby="flow-h-title flow-h-desc">
+      <title id="flow-h-title">Combination approach</title>
+      <desc id="flow-h-desc">Combination approach: Vula segments SMEs, Miarakap builds the pipeline, and Aceli's lending partners finance them.</desc>
+      <g class="fl-step d1">
+        <rect x="10" y="10" width="150" height="64" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="1"/>
+        <text class="fl-title" x="85" y="34" text-anchor="middle" dominant-baseline="central">Vula</text>
+        <text class="fl-sub" x="85" y="54" text-anchor="middle" dominant-baseline="central">Segment SMEs</text>
+      </g>
+      <path class="fl-arrow fl-line d2" pathLength="1" d="M166 42 H199"/>
+      <path class="fl-arrow fl-step fl-head d3" d="M193 37 L199 42 L193 47"/>
+      <g class="fl-step d4">
+        <rect x="205" y="10" width="150" height="64" rx="8" fill="#faeeda" stroke="#b7791f" stroke-width="1"/>
+        <text class="fl-title" x="280" y="34" text-anchor="middle" dominant-baseline="central">Miarakap</text>
+        <text class="fl-sub" x="280" y="54" text-anchor="middle" dominant-baseline="central">Build pipeline</text>
+      </g>
+      <path class="fl-arrow fl-line d5" pathLength="1" d="M361 42 H394"/>
+      <path class="fl-arrow fl-step fl-head d6" d="M388 37 L394 42 L388 47"/>
+      <g class="fl-step d7">
+        <rect x="400" y="10" width="150" height="64" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="1"/>
+        <text class="fl-title" x="475" y="34" text-anchor="middle" dominant-baseline="central">Aceli's lenders</text>
+        <text class="fl-sub" x="475" y="54" text-anchor="middle" dominant-baseline="central">Finance SMEs</text>
+      </g>
+    </svg>
+    <svg class="flow-v" viewBox="0 0 300 244" role="img" aria-labelledby="flow-v-title flow-v-desc">
+      <title id="flow-v-title">Combination approach</title>
+      <desc id="flow-v-desc">Combination approach: Vula segments SMEs, Miarakap builds the pipeline, and Aceli's lending partners finance them.</desc>
+      <g class="fl-step d1">
+        <rect x="40" y="4" width="220" height="56" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="1"/>
+        <text class="fl-title" x="150" y="24" text-anchor="middle" dominant-baseline="central">Vula</text>
+        <text class="fl-sub" x="150" y="43" text-anchor="middle" dominant-baseline="central">Segment SMEs</text>
+      </g>
+      <path class="fl-arrow fl-line d2" pathLength="1" d="M150 66 V87"/>
+      <path class="fl-arrow fl-step fl-head d3" d="M145 81 L150 87 L155 81"/>
+      <g class="fl-step d4">
+        <rect x="40" y="94" width="220" height="56" rx="8" fill="#faeeda" stroke="#b7791f" stroke-width="1"/>
+        <text class="fl-title" x="150" y="114" text-anchor="middle" dominant-baseline="central">Miarakap</text>
+        <text class="fl-sub" x="150" y="133" text-anchor="middle" dominant-baseline="central">Build pipeline</text>
+      </g>
+      <path class="fl-arrow fl-line d5" pathLength="1" d="M150 156 V177"/>
+      <path class="fl-arrow fl-step fl-head d6" d="M145 171 L150 177 L155 171"/>
+      <g class="fl-step d7">
+        <rect x="40" y="184" width="220" height="56" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="1"/>
+        <text class="fl-title" x="150" y="204" text-anchor="middle" dominant-baseline="central">Aceli's lenders</text>
+        <text class="fl-sub" x="150" y="223" text-anchor="middle" dominant-baseline="central">Finance SMEs</text>
+      </g>
+    </svg>
+  </div>
 </div>
 
 <div class="card">
   <h2>Grant/program funding</h2>
-  <p class="body-text">Vula is something that Jim is already in the process of contracting at the country/project level. This would be paid out of the programming budget as a pilot. It will provide CRS with segmentation data of the SMEs we work with and funding opportunities that best match their needs.</p>
-  <p class="body-text">The envisioned relationship with Miarakap would mirror our past work with them when we were exploring an expansion of Isidro into East Africa. We would pay them to develop a pipeline that would include SMEs that CRS already works with, plus additional SMEs that we would jointly identify. The difference, though, would be that instead of building that pipeline for one specific funding opportunity (i.e., Isidro), we would market those SMEs to all existing capital providers in the ecosystem.</p>
+  <p class="body-text" id="vula-text">Vula is something that Jim is already in the process of contracting at the country/project level. This would be paid out of the programming budget as a pilot. It will provide CRS with segmentation data of the SMEs we work with and funding opportunities that best match their needs.</p>
+  <p class="body-text" id="miarakap-text">The envisioned relationship with Miarakap would mirror our past work with them when we were exploring an expansion of Isidro into East Africa. We would pay them to develop a pipeline that would include SMEs that CRS already works with, plus additional SMEs that we would jointly identify. The difference, though, would be that instead of building that pipeline for one specific funding opportunity (i.e., Isidro), we would market those SMEs to all existing capital providers in the ecosystem.</p>
 </div>
 
-<div class="card">
+<div class="card" id="aceli-section">
   <h2>Investment/CSV opportunity</h2>
   <p class="body-text">The new fund being raised by Aceli would typically fall in the fourth category (indirect), we placed it in the aligned category for several reasons.</p>
   <p class="body-text">First, Aceli is a marketplace approach. They currently work with 19 lending partners in Uganda, which span tier 1, 2, and 3 commercial banks, savings and credit cooperatives, and non-bank financial institutions. The SMEs that CRS works with are at different stages and have different needs, which cannot be served by one lending partner. Their focus on working with banks also sets them apart.</p>
@@ -174,36 +382,39 @@
 <div class="card">
   <h2>Timeline</h2>
   <div class="gantt-legend"><span class="grant">Grant/program funding</span><span class="invest">Investment/CSV</span></div>
+  <div class="gantt-hint" aria-hidden="true">Swipe for 2027 &rarr;</div>
+  <div class="gantt-frame">
   <div class="gantt-wrap">
     <div class="gantt">
-      <div></div>
+      <div class="corner"></div>
       <div class="yr" style="grid-column:2 / 5;">2026</div>
       <div class="yr" style="grid-column:5 / 17;">2027</div>
 
-      <div></div>
+      <div class="corner"></div>
       <div class="mo">Oct</div><div class="mo">Nov</div><div class="mo">Dec</div>
       <div class="mo">Jan</div><div class="mo">Feb</div><div class="mo">Mar</div><div class="mo">Apr</div><div class="mo">May</div><div class="mo">Jun</div>
       <div class="mo">Jul</div><div class="mo">Aug</div><div class="mo">Sep</div><div class="mo">Oct</div><div class="mo">Nov</div><div class="mo">Dec</div>
 
-      <div class="sec">Vula</div>
+      <div class="sec"><span>Vula</span></div>
       <div class="task">Finalize contract</div><div class="bar grant" style="grid-column:2 / 3;"></div>
       <div class="task">Hands-on planning session, pilot scope agreement, platform walkthrough</div><div class="bar grant" style="grid-column:3 / 5;"></div>
 
-      <div class="sec">Miarakap</div>
+      <div class="sec"><span>Miarakap</span></div>
       <div class="task">Scope and contract</div><div class="bar grant" style="grid-column:3 / 5;"></div>
       <div class="task">Build pipeline, segment pipeline, segment capital providers</div><div class="bar grant" style="grid-column:5 / 8;"></div>
       <div class="task">Match SMEs to existing lenders</div><div class="bar grant" style="grid-column:5 / 17;"></div>
 
-      <div class="sec">Aceli wholesale facility</div>
+      <div class="sec"><span>Aceli wholesale facility</span></div>
       <div class="task">Due diligence, decide on instrument</div><div class="bar invest" style="grid-column:3 / 5;"></div>
       <div class="task">Set up CSV</div><div class="bar invest" style="grid-column:5 / 8;"></div>
       <div class="task">Generate and coordinate pipeline</div><div class="bar invest" style="grid-column:5 / 17;"></div>
       <div class="task">Close investment</div><div class="bar invest" style="grid-column:7 / 11;"></div>
 
-      <div class="sec">Travel</div>
+      <div class="sec"><span>Travel</span></div>
       <div class="task">CSAF convening</div><div class="bar travel" style="grid-column:2 / 3;"></div>
       <div class="task">Madagascar/Uganda trip</div><div class="bar travel" style="grid-column:5 / 8;"></div>
     </div>
+  </div>
   </div>
   <div class="travel-note">
     <h3>Travel</h3>
@@ -222,13 +433,13 @@
   <p class="body-text">Similarly while Aceli hopes to expand their wholesale model to other countries, currently they are starting only in Uganda. Other Uganda-focused lenders include Balloon Ventures and Pearl Capital</p>
   <p class="body-text">Other options for partners on the advisory side that have broader geographic coverage include:</p>
   <ul class="body-list">
-    <li>Agri Frontiers
+    <li id="agri-frontiers-item">Agri Frontiers
       <ul>
         <li>Regional agri-SME accelerator that is raising a fund</li>
         <li>Working with CRS on joint proposal for Forest Flavors (non-finance related)</li>
       </ul>
     </li>
-    <li>I&amp;P
+    <li id="ip-item">I&amp;P
       <ul>
         <li>Does advisory work (i.e., with donor finding), ecosystem building (they helped set up Miarakap), and fund management.</li>
         <li>On the fund management side they have a donor-funded fund of funds called FASA that has provided a warehouse facility to Agri Frontiers.
@@ -356,6 +567,109 @@ document.getElementById('download-text-link').addEventListener('click', function
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 });
+
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+// Today marker on the Gantt. Month columns run Oct 2026 (index 0) to Dec 2027 (index 14).
+// The marker elements have no .sec/.task class, so ganttToText skips them.
+(function() {
+  var gantt = document.querySelector('.gantt');
+  if (!gantt) return;
+  var now = new Date();
+  var idx = (now.getFullYear() - 2026) * 12 + now.getMonth() - 9;
+  if (idx < 0 || idx > 14) return;
+  var frac = (now.getDate() - 0.5) / new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  gantt.classList.add('has-today');
+  var line = document.createElement('div');
+  line.className = 'today-line';
+  line.setAttribute('aria-hidden', 'true');
+  var label = document.createElement('div');
+  label.className = 'today-label';
+  label.setAttribute('aria-hidden', 'true');
+  label.textContent = 'Today';
+  gantt.appendChild(line);
+  gantt.appendChild(label);
+  var wrap = gantt.parentNode, x = 0;
+  function clip() {
+    // Hide the marker while it is scrolled underneath the pinned label column
+    var under = x - wrap.scrollLeft < gantt.querySelector('.task').offsetWidth;
+    line.style.visibility = label.style.visibility = under ? 'hidden' : '';
+  }
+  function place() {
+    var mo = gantt.querySelectorAll('.mo')[idx];
+    x = mo.offsetLeft + mo.offsetWidth * frac;
+    label.style.left = x + 'px';
+    label.style.top = mo.offsetTop + 'px';
+    line.style.left = x + 'px';
+    line.style.top = (mo.offsetTop + 15) + 'px';
+    clip();
+  }
+  place();
+  wrap.addEventListener('scroll', clip, { passive: true });
+  if (window.ResizeObserver) new ResizeObserver(place).observe(gantt);
+  else window.addEventListener('resize', place);
+})();
+
+// Phone Gantt: "Swipe for 2027" hint and right-edge fade until the user reaches the right end.
+(function() {
+  var wrap = document.querySelector('.gantt-wrap');
+  var frame = document.querySelector('.gantt-frame');
+  var hint = document.querySelector('.gantt-hint');
+  if (!wrap || !frame || !hint) return;
+  var gantt = wrap.querySelector('.gantt');
+  var reachedEnd = false;
+  function update() {
+    gantt.style.setProperty('--gantt-scroll', wrap.scrollLeft + 'px');
+    var overflow = wrap.scrollWidth - wrap.clientWidth > 1;
+    if (overflow && wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 2) reachedEnd = true;
+    var show = overflow && !reachedEnd;
+    hint.classList.toggle('show', show);
+    frame.classList.toggle('fade', show);
+  }
+  wrap.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+
+// Tappable diagram boxes: scroll to the related passage and briefly highlight it.
+(function() {
+  function jump(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var reduce = prefersReducedMotion();
+    var top = el.getBoundingClientRect().top + window.pageYOffset - 24;
+    window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+    el.focus({ preventScroll: true });
+    var cls = reduce ? 'flash-static' : 'flash';
+    el.classList.remove('flash', 'flash-static');
+    void el.offsetWidth;  // restart the animation if it is already running
+    el.classList.add(cls);
+    clearTimeout(el._flashTimer);
+    el._flashTimer = setTimeout(function() { el.classList.remove(cls); }, 1500);
+  }
+  document.querySelectorAll('.tap').forEach(function(t) {
+    t.addEventListener('click', function() { jump(t.getAttribute('data-target')); });
+    t.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jump(t.getAttribute('data-target')); }
+    });
+  });
+})();
+
+// Flow graphic: play the entrance once, the first time it scrolls into view.
+(function() {
+  var flow = document.querySelector('.flow');
+  if (!flow || !('IntersectionObserver' in window) || prefersReducedMotion()) return;
+  flow.classList.add('flow-armed');
+  var io = new IntersectionObserver(function(entries) {
+    if (!entries.some(function(e) { return e.isIntersecting; })) return;
+    io.disconnect();
+    flow.classList.add('flow-play');
+  }, { threshold: 0.4 });
+  io.observe(flow);
+})();
 </script>
 
 </body>
