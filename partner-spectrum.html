@@ -47,12 +47,17 @@
   ul.body-list{font-size:14px;line-height:1.7;margin:8px 0 0;padding-left:20px;}
   ul.body-list li{margin:0 0 4px;}
   p.body-text + p.body-text{margin-top:12px;}
+  #download-text-link:hover{color:var(--text-primary);text-decoration:underline;}
 </style>
 </head>
 <body>
 
 <div class="card">
-  <a class="back-link" href="index.html">&larr; Back to contents</a>
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:0 0 12px;">
+    <a class="back-link" href="index.html" style="margin:0;">&larr; Back to contents</a>
+    <a href="#" id="download-text-link" title="Download this page as a text file, then open it in Word to suggest edits with tracked changes" style="font-size:12px;color:var(--text-primary);text-decoration:none;background:var(--surface-2);border:1px solid var(--border-strong);border-radius:var(--radius);padding:4px 10px;">&darr; Download as text</a>
+  </div>
+  <p style="font-size:11px;color:var(--text-secondary);margin:0 0 12px;">Want to suggest edits? Use &ldquo;Download as text,&rdquo; then open the file in Word to make tracked changes.</p>
   <h1>Where partners sit: control to leverage</h1>
   <p class="caption">Forest Flavors, CRS Innovative Finance</p>
   <p class="body-text" style="margin-top:12px;">This page lays out the range of relationships CRS could have with a lending partner. At the left are facilities CRS sponsors and runs itself. At the right are arrangements where CRS is one investor among several. The columns are clusters of real or proposed examples rather than sharp categories. We focus on the two middle columns, Mandate and Aligned, where CRS works through an outside partner but can still shape how the facility serves its programs.</p>
@@ -135,6 +140,36 @@
   <p class="body-text">Second, Aceli's existing BDS technical assistance complements the type of technical assistance CRS typically provides, e.g., agroforestry, farmer training.</p>
   <p class="body-text">Third, their existing portfolio has already demonstrated overlap with CRS supported SMEs. Four SMEs that CRS works with in Uganda have already accessed financing through Aceli lending partners (worth over $1 million) and one has already benefited from their TA program. These results are roughly equivalent results to Isidro with no effort or cost from our side. The numbers would naturally increase with a directed and coordinated effort.</p>
 </div>
+
+<script>
+document.getElementById('download-text-link').addEventListener('click', function(e) {
+  e.preventDefault();
+  var blocks = [];
+  document.querySelectorAll('.card').forEach(function(card) {
+    card.querySelectorAll('h1, h2, p.caption, p.body-text, ul.body-list').forEach(function(el) {
+      if (el.tagName === 'H1' || el.tagName === 'H2') {
+        blocks.push(el.textContent.trim().toUpperCase());
+      } else if (el.tagName === 'UL') {
+        var items = [];
+        el.querySelectorAll('li').forEach(function(li) { items.push('- ' + li.textContent.trim()); });
+        blocks.push(items.join('\n'));
+      } else {
+        blocks.push(el.textContent.trim());
+      }
+    });
+  });
+  var text = blocks.join('\n\n');
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'partner-spectrum.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+</script>
 
 </body>
 </html>
