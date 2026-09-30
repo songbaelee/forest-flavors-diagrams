@@ -70,6 +70,7 @@
   .picked2 { fill: none; stroke: var(--text-primary); stroke-width: 1.2; transition: x 0.8s ease, y 0.8s ease, width 0.8s ease, height 0.8s ease, rx 0.8s ease; }
   .lbl { opacity: 0; transition: opacity 0.5s ease; font-size: 13px; fill: var(--text-secondary); }
   .dotA, .dotB { fill: none; stroke: var(--text-primary); stroke-width: 1; transition: cx 0.8s ease, cy 0.8s ease, r 0.8s ease, opacity 0.6s ease, fill 0.6s ease; }
+  .dotA.dropping, .dotB.dropping { transition: cx 0.9s ease, cy 0.9s ease-in, r 0.9s ease, opacity 0.4s ease, fill 0.6s ease; }
   .ta-tinted { fill: var(--ta); stroke: var(--ta); }
   #taLegend { opacity: 0; transition: opacity 0.5s ease; font-size: 13px; color: var(--text-secondary); text-align: center; margin: 10px auto 0; }
   #taLegend .ta-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--ta); margin-right: 6px; vertical-align: middle; }
@@ -425,14 +426,14 @@
     <div id="stage2" tabindex="0">
       <h2 class="sr-only">Two funnels, one for an investment-led approach and one for a technical-assistance-led approach, that fill with dots representing companies and narrow from screening to evaluation to closed loans, with commentary above narrating each stage before switching from one funnel to the other. Green fill marks companies that receive technical assistance: in the investment approach, only the 10 closed loans after closing; in the technical assistance approach, all 600 companies before evaluation.</h2>
       <div class="commentary-wrap">
-        <p id="commentBlock1"><span id="s1">An average fund screens around 300 companies to build its pipeline.</span> <span id="s2">Of those, about 50 get evaluated in real depth.</span> <span id="s3">And roughly 10 actually close as loans.</span> <span id="s3b">Technical assistance comes after the loan closes, and goes only to those 10.</span> <span id="s4">Now compare that to sourcing pipeline through an existing technical assistance activity.</span></p>
-        <p id="commentBlock2"><span id="s5">A conservative estimate is that it takes twice as many companies to start — around 600.</span> <span id="s5b">Here, technical assistance comes first: all 600 go through it before any are evaluated for a loan.</span> <span id="s6">About 100 of those get evaluated in depth.</span> <span id="s7">And the same 10 close as loans — twice the screening effort for the same result.</span></p>
+        <p id="commentBlock1"><span id="s1">Take, for example, a fund that screens 300 companies to build its pipeline.</span> <span id="s2">Of those, about 50 get evaluated in real depth.</span> <span id="s3">And roughly 10 actually close as loans.</span> <span id="s3b">Technical assistance comes after the loan closes, and goes only to those 10.</span> <span id="s4">Now compare that to sourcing pipeline through an existing technical assistance activity.</span></p>
+        <p id="commentBlock2"><span id="s5b">Here, technical assistance comes first: around 600 companies go through it before any are evaluated for a loan.</span> <span id="s6">About 100 of those get evaluated in depth.</span> <span id="s7">And the same 10 close as loans — twice the screening effort for the same result.</span></p>
       </div>
       <div class="funnel-headers">
         <div class="funnel-hdr" id="hdrA">Investment approach</div>
         <div class="funnel-hdr" id="hdrB">Technical assistance approach</div>
       </div>
-      <svg id="scene2" width="100%" viewBox="0 -100 680 440" xmlns="http://www.w3.org/2000/svg">
+      <svg id="scene2" width="100%" viewBox="0 -135 680 475" xmlns="http://www.w3.org/2000/svg">
         <path id="outlineA" class="outline" d="M60,40 L300,40 L250,170 L250,260 L110,260 L110,170 Z"/>
         <path id="outlineB" class="outline" d="M380,-90 L620,-90 L570,170 L570,260 L430,260 L430,170 Z"/>
         <g id="Adots"></g>
@@ -672,14 +673,17 @@ stage.focus();
     const closeTarget = new Map(closePts.map((p,i)=>[p.join(','), trayRow[i]]));
 
     const g = document.getElementById(cfg.groupId);
+    const xMid = (cfg.topLeft+cfg.topRight)/2;
     return scatter.map(pt=>{
       const key = pt.join(',');
+      const drop = [xMid + (pt[0]-xMid)*0.5, cfg.yTop - (15 + Math.random()*25)];
       const c = document.createElementNS(ns,'circle');
-      c.setAttribute('cx', pt[0]); c.setAttribute('cy', pt[1]); c.setAttribute('r', cfg.r0);
+      c.setAttribute('cx', drop[0]); c.setAttribute('cy', drop[1]); c.setAttribute('r', cfg.r0);
       c.setAttribute('class', cfg.dotClass);
+      c.style.opacity = 0;
       g.appendChild(c);
       return {
-        el: c, scatter: pt,
+        el: c, scatter: pt, drop,
         neck: evalTarget.get(key) || pt,
         tray: closeTarget.get(key) || null,
         isEval: evalSet.has(key), isClose: closeSet.has(key)
@@ -718,39 +722,70 @@ stage.focus();
     trayY: 300, trayXMin: 420, trayXMax: 580,
     total: 600, evalCount: 100, closeCount: 10, r0: 3.5
   });
-  const gAstateByStep = [0,0,1,2,2,2,2,2,2,2,2];
-  const gBstateByStep = [0,0,0,0,0,0,0,0,1,2,2];
-  const capLabels2 = ['commentBlock1','commentBlock2','s1','s2','s3','s3b','s4','s5','s5b','s6','s7','labelA3','labelB3','finalNote','taLegend'];
+  const gAstateByStep = [0,0,1,2,2,2,2,2,2,2];
+  const gBstateByStep = [0,0,0,0,0,0,0,1,2,2];
+  const capLabels2 = ['commentBlock1','commentBlock2','s1','s2','s3','s3b','s4','s5b','s6','s7','labelA3','labelB3','finalNote','taLegend'];
   const visibleLabels2 = {
     1: ['commentBlock1','s1'],
     2: ['commentBlock1','s1','s2'],
     3: ['commentBlock1','s1','s2','s3','labelA3'],
     4: ['commentBlock1','s1','s2','s3','s3b','labelA3','taLegend'],
     5: ['commentBlock1','s1','s2','s3','s3b','s4','labelA3','taLegend'],
-    6: ['commentBlock2','s5','labelA3','taLegend'],
-    7: ['commentBlock2','s5','s5b','labelA3','taLegend'],
-    8: ['commentBlock2','s5','s5b','s6','labelA3','taLegend'],
-    9: ['commentBlock2','s5','s5b','s6','s7','labelA3','labelB3','taLegend'],
-    10: ['commentBlock2','s5','s5b','s6','s7','labelA3','labelB3','taLegend','finalNote']
+    6: ['commentBlock2','s5b','labelA3','taLegend'],
+    7: ['commentBlock2','s5b','s6','labelA3','taLegend'],
+    8: ['commentBlock2','s5b','s6','s7','labelA3','labelB3','taLegend'],
+    9: ['commentBlock2','s5b','s6','s7','labelA3','labelB3','taLegend','finalNote']
   };
+
+  // Park dots above the funnel mouth, invisible. `instant` skips transitions (used when looping back).
+  function parkAtDrop(circles, instant){
+    circles.forEach(d=>{
+      if(instant) d.el.style.transition = 'none';
+      d.el.setAttribute('cx', d.drop[0]); d.el.setAttribute('cy', d.drop[1]); d.el.setAttribute('r', 3.5);
+      d.el.style.opacity = 0;
+    });
+    if(instant){
+      circles[0].el.getBoundingClientRect();
+      circles.forEach(d=>{ d.el.style.transition = ''; });
+    }
+  }
+  // Staggered pour-in: per-dot delays so dots arrive as a stream; cleared on next render or after 2.5s.
+  let dropToken = 0;
+  function clearDrop(){
+    circlesA.concat(circlesB).forEach(d=>{ d.el.classList.remove('dropping'); d.el.style.transitionDelay = ''; });
+  }
+  function startDrop(circles){
+    circles.forEach(d=>{
+      const t = (Math.random()*1.5).toFixed(2) + 's';
+      d.el.classList.add('dropping');
+      d.el.style.transitionDelay = `${t}, ${t}, ${t}, ${t}, 0s`;
+    });
+    const token = ++dropToken;
+    setTimeout(()=>{ if(token===dropToken) clearDrop(); }, 2500);
+  }
 
   let step2 = 0;
   function render2(){
+    clearDrop();
     document.getElementById('Adots').style.opacity = step2>=1 ? 1 : 0;
     document.getElementById('outlineA').style.opacity = step2>=1 ? 1 : 0;
     document.getElementById('hdrA').style.opacity = step2>=1 ? 1 : 0;
     document.getElementById('Bdots').style.opacity = step2>=6 ? 1 : 0;
     document.getElementById('outlineB').style.opacity = step2>=6 ? 1 : 0;
     document.getElementById('hdrB').style.opacity = step2>=6 ? 1 : 0;
-    renderFunnel(circlesA, gAstateByStep[step2], 3.5, 3.5, 3.5);
-    renderFunnel(circlesB, gBstateByStep[step2], 3.5, 3.5, 3.5);
     circlesA.forEach(d=>d.el.classList.toggle('ta-tinted', step2>=4 && d.isClose));
-    circlesB.forEach(d=>d.el.classList.toggle('ta-tinted', step2>=7));
+    circlesB.forEach(d=>d.el.classList.toggle('ta-tinted', step2>=6));
+    if(step2===1) startDrop(circlesA);
+    if(step2===6) startDrop(circlesB);
+    if(step2>=1) renderFunnel(circlesA, gAstateByStep[step2], 3.5, 3.5, 3.5);
+    else parkAtDrop(circlesA, true);
+    if(step2>=6) renderFunnel(circlesB, gBstateByStep[step2], 3.5, 3.5, 3.5);
+    else parkAtDrop(circlesB, step2===0);
     capLabels2.forEach(id=>document.getElementById(id).style.opacity=0);
     (visibleLabels2[step2]||[]).forEach(id=>document.getElementById(id).style.opacity=1);
   }
   function advance2(){
-    step2 = (step2+1)%11;
+    step2 = (step2+1)%10;
     render2();
     if(step2===0){
       document.getElementById('stage2').scrollIntoView({ behavior: 'smooth', block: 'start' });
