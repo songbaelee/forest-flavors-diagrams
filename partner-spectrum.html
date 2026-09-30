@@ -49,7 +49,11 @@
   p.body-text + p.body-text{margin-top:12px;}
   #download-text-link:hover{color:var(--text-primary);text-decoration:underline;}
   .gantt-wrap{overflow-x:auto;margin-top:12px;}
-  .gantt{display:grid;grid-template-columns:230px repeat(15,minmax(28px,1fr));min-width:680px;font-size:12px;row-gap:6px;}
+  .gantt{display:grid;grid-template-columns:230px repeat(15,minmax(28px,1fr));min-width:680px;font-size:12px;row-gap:6px;
+    /* Dec 2026 / Jan 2027 divider at the left edge of column 5 (230px + 3 of 15 month columns).
+       Background % resolves against width minus the 1px line, hence 229px rather than 230px. */
+    background:linear-gradient(var(--border-strong),var(--border-strong)) no-repeat;
+    background-size:1px 100%;background-position:calc(230px + (100% - 229px) / 5) 0;}
   .gantt .yr{font-weight:600;color:var(--text-primary);text-align:center;border-bottom:1px solid var(--border-strong);padding-bottom:4px;}
   .gantt .yr + .yr{border-left:1px solid var(--border-strong);}
   .gantt .mo{color:var(--text-secondary);text-align:center;font-size:11px;padding:2px 0 6px;}
@@ -66,6 +70,9 @@
   h3{font-size:13px;font-weight:600;margin:18px 0 6px;color:var(--text-primary);}
   ul.body-list ul{margin:4px 0 0;padding-left:20px;list-style:circle;}
   ul.body-list a{color:#185FA5;}
+  .travel-note{margin-top:16px;padding:14px 16px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);}
+  .travel-note h3{margin:0 0 6px;}
+  .travel-note a{color:#185FA5;}
   h3.diagram-label{font-size:12px;font-weight:600;color:var(--text-secondary);margin:20px 0 4px;}
 </style>
 </head>
@@ -198,6 +205,10 @@
       <div class="task">Madagascar/Uganda trip</div><div class="bar travel" style="grid-column:5 / 8;"></div>
     </div>
   </div>
+  <div class="travel-note">
+    <h3>Travel</h3>
+    <p class="body-text">The annual CSAF convening was one of two events I went to every year when I was at USAID. The other was the annual convening for Aceli lending partners. The reason the CSAF convening was so valuable was both for the chance to meet with other attendees and also because of the content. This year I think the trip would be even more valuable because participants include potential partners (Aceli, I&amp;P, SIDI) and the topic this year is technical assistance (investment readiness, the landscape, scaling). In addition, for the last several years, the CSAF convening has been combined with a one-day meeting for the <a href="https://smallfoundation.ie/partner/agri-sme-learning-collective/" target="_blank" rel="noopener">Agri SME Learning Collective (ASLC)</a> which is focused on accelerating the pace of learning in the agricultural SME sector and channel learning and best practices to influence practitioners.</p>
+  </div>
 </div>
 
 <div class="card">
@@ -255,13 +266,28 @@
 </div>
 
 <script>
+// Text of a node, with external links rendered as "link text (URL)"
+function nodeText(n) {
+  if (n.nodeType === 3) return n.textContent;
+  if (n.nodeType !== 1) return '';
+  var inner = '';
+  n.childNodes.forEach(function(c) { inner += nodeText(c); });
+  var href = n.tagName === 'A' ? (n.getAttribute('href') || '') : '';
+  return /^https?:\/\//i.test(href) ? inner + ' (' + href + ')' : inner;
+}
+function textWithLinks(el) {
+  var s = '';
+  el.childNodes.forEach(function(c) { s += nodeText(c); });
+  return s;
+}
+
 function listToText(ul, depth) {
   var lines = [];
   Array.prototype.forEach.call(ul.children, function(li) {
     if (li.tagName !== 'LI') return;
     var own = '';
     li.childNodes.forEach(function(n) {
-      if (n.nodeType === 3 || (n.nodeType === 1 && n.tagName !== 'UL')) own += n.textContent;
+      if (n.nodeType === 3 || (n.nodeType === 1 && n.tagName !== 'UL')) own += nodeText(n);
     });
     lines.push('  '.repeat(depth) + '- ' + own.replace(/\s+/g, ' ').trim());
     Array.prototype.forEach.call(li.children, function(child) {
@@ -315,7 +341,7 @@ document.getElementById('download-text-link').addEventListener('click', function
       } else if (el.classList.contains('gantt')) {
         blocks.push(ganttToText(el));
       } else {
-        blocks.push(el.textContent.trim());
+        blocks.push(textWithLinks(el).trim());
       }
     });
   });
