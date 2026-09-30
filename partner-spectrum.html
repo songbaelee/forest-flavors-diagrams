@@ -48,6 +48,20 @@
   ul.body-list li{margin:0 0 4px;}
   p.body-text + p.body-text{margin-top:12px;}
   #download-text-link:hover{color:var(--text-primary);text-decoration:underline;}
+  .gantt-wrap{overflow-x:auto;margin-top:12px;}
+  .gantt{display:grid;grid-template-columns:230px repeat(15,minmax(28px,1fr));min-width:680px;font-size:12px;row-gap:6px;}
+  .gantt .yr{font-weight:600;color:var(--text-primary);text-align:center;border-bottom:1px solid var(--border-strong);padding-bottom:4px;}
+  .gantt .yr + .yr{border-left:1px solid var(--border-strong);}
+  .gantt .mo{color:var(--text-secondary);text-align:center;font-size:11px;padding:2px 0 6px;}
+  .gantt .sec{grid-column:1 / -1;font-weight:600;color:var(--text-primary);font-size:13px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);}
+  .gantt .task{grid-column:1;color:var(--text-secondary);line-height:1.35;padding-right:10px;align-self:center;}
+  .gantt .bar{height:18px;border-radius:4px;align-self:center;border:1px solid;}
+  .gantt .bar.grant{background:#faeeda;border-color:#b7791f;}
+  .gantt .bar.invest{background:#e6f1fb;border-color:#185FA5;}
+  .gantt-legend{display:flex;gap:16px;font-size:12px;color:var(--text-secondary);margin-top:4px;}
+  .gantt-legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid;margin-right:6px;vertical-align:-2px;}
+  .gantt-legend .grant::before{background:#faeeda;border-color:#b7791f;}
+  .gantt-legend .invest::before{background:#e6f1fb;border-color:#185FA5;}
 </style>
 </head>
 <body>
@@ -139,6 +153,38 @@
   <p class="body-text">First, Aceli is a marketplace approach. They currently work with 19 lending partners in Uganda, which span tier 1, 2, and 3 commercial banks, savings and credit cooperatives, and non-bank financial institutions. The SMEs that CRS works with are at different stages and have different needs, which cannot be served by one lending partner. Their focus on working with banks also sets them apart.</p>
   <p class="body-text">Second, Aceli's existing BDS technical assistance complements the type of technical assistance CRS typically provides, e.g., agroforestry, farmer training.</p>
   <p class="body-text">Third, their existing portfolio has already demonstrated overlap with CRS supported SMEs. Four SMEs that CRS works with in Uganda have already accessed financing through Aceli lending partners (worth over $1 million) and one has already benefited from their TA program. These results are roughly equivalent results to Isidro with no effort or cost from our side. The numbers would naturally increase with a directed and coordinated effort.</p>
+</div>
+
+<div class="card">
+  <h2>Timeline</h2>
+  <div class="gantt-legend"><span class="grant">Grant/program funding</span><span class="invest">Investment/CSV</span></div>
+  <div class="gantt-wrap">
+    <div class="gantt">
+      <div></div>
+      <div class="yr" style="grid-column:2 / 5;">2026</div>
+      <div class="yr" style="grid-column:5 / 17;">2027</div>
+
+      <div></div>
+      <div class="mo">Oct</div><div class="mo">Nov</div><div class="mo">Dec</div>
+      <div class="mo">Jan</div><div class="mo">Feb</div><div class="mo">Mar</div><div class="mo">Apr</div><div class="mo">May</div><div class="mo">Jun</div>
+      <div class="mo">Jul</div><div class="mo">Aug</div><div class="mo">Sep</div><div class="mo">Oct</div><div class="mo">Nov</div><div class="mo">Dec</div>
+
+      <div class="sec">Vula</div>
+      <div class="task">Finalize contract</div><div class="bar grant" style="grid-column:2 / 3;"></div>
+      <div class="task">Hands-on planning session, pilot scope agreement, platform walkthrough</div><div class="bar grant" style="grid-column:3 / 5;"></div>
+
+      <div class="sec">Miarakap</div>
+      <div class="task">Scope and contract</div><div class="bar grant" style="grid-column:3 / 5;"></div>
+      <div class="task">Build pipeline, segment pipeline, segment capital providers</div><div class="bar grant" style="grid-column:5 / 8;"></div>
+      <div class="task">Match SMEs to existing lenders</div><div class="bar grant" style="grid-column:5 / 17;"></div>
+
+      <div class="sec">Aceli wholesale facility</div>
+      <div class="task">Due diligence, decide on instrument</div><div class="bar invest" style="grid-column:3 / 5;"></div>
+      <div class="task">Set up CSV</div><div class="bar invest" style="grid-column:5 / 8;"></div>
+      <div class="task">Generate and coordinate pipeline</div><div class="bar invest" style="grid-column:5 / 17;"></div>
+      <div class="task">Close investment</div><div class="bar invest" style="grid-column:7 / 11;"></div>
+    </div>
+  </div>
 </div>
 
 <script>
