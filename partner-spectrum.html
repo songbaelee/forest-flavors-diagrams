@@ -58,6 +58,7 @@
   .gantt .bar{height:18px;border-radius:4px;align-self:center;border:1px solid;}
   .gantt .bar.grant{background:#faeeda;border-color:#b7791f;}
   .gantt .bar.invest{background:#e6f1fb;border-color:#185FA5;}
+  .gantt .bar.travel{background:var(--surface-2);border-color:var(--border-strong);}
   .gantt-legend{display:flex;gap:16px;font-size:12px;color:var(--text-secondary);margin-top:4px;}
   .gantt-legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid;margin-right:6px;vertical-align:-2px;}
   .gantt-legend .grant::before{background:#faeeda;border-color:#b7791f;}
@@ -191,6 +192,10 @@
       <div class="task">Set up CSV</div><div class="bar invest" style="grid-column:5 / 8;"></div>
       <div class="task">Generate and coordinate pipeline</div><div class="bar invest" style="grid-column:5 / 17;"></div>
       <div class="task">Close investment</div><div class="bar invest" style="grid-column:7 / 11;"></div>
+
+      <div class="sec">Travel</div>
+      <div class="task">CSAF convening</div><div class="bar travel" style="grid-column:2 / 3;"></div>
+      <div class="task">Madagascar/Uganda trip</div><div class="bar travel" style="grid-column:5 / 8;"></div>
     </div>
   </div>
 </div>
