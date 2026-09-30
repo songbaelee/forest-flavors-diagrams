@@ -62,6 +62,9 @@
   .gantt-legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid;margin-right:6px;vertical-align:-2px;}
   .gantt-legend .grant::before{background:#faeeda;border-color:#b7791f;}
   .gantt-legend .invest::before{background:#e6f1fb;border-color:#185FA5;}
+  h3{font-size:13px;font-weight:600;margin:18px 0 6px;color:var(--text-primary);}
+  ul.body-list ul{margin:4px 0 0;padding-left:20px;list-style:circle;}
+  ul.body-list a{color:#185FA5;}
 </style>
 </head>
 <body>
@@ -187,7 +190,71 @@
   </div>
 </div>
 
+<div class="card">
+  <h2>Considerations and Other Options</h2>
+
+  <h3>Miarakap</h3>
+  <p class="body-text">While the initial focus of our work with Miarakap would be marketing the identified pipeline to other lenders, Social Ventures could always provide investment capital for Miarakap to manage on our behalf to make loans to SMEs that we think are highly impactful but are not able to access financing from other sources.</p>
+
+  <h3>Single-country versus regional approach</h3>
+  <p class="body-text">Our suggestion to start with Miarakap is because of our existing relationship with them and the strength of our programming there but their work is limited to only Madagascar.</p>
+  <p class="body-text">Similarly while Aceli hopes to expand their wholesale model to other countries, currently they are starting only in Uganda. Other Uganda-focused lenders include Balloon Ventures and Pearl Capital</p>
+  <p class="body-text">Other options for partners on the advisory side that have broader geographic coverage include:</p>
+  <ul class="body-list">
+    <li>Agri Frontiers
+      <ul>
+        <li>Regional agri-SME accelerator that is raising a fund</li>
+        <li>Working with CRS on joint proposal for Forest Flavors (non-finance related)</li>
+      </ul>
+    </li>
+    <li>I&amp;P
+      <ul>
+        <li>Does advisory work (i.e., with donor finding), ecosystem building (they helped set up Miarakap), and fund management.</li>
+        <li>On the fund management side they have a donor-funded fund of funds called FASA that has provided a warehouse facility to Agri Frontiers.
+          <ul>
+            <li>Pearl Capital in Uganda (another past CRS partner) is in their pipeline.</li>
+          </ul>
+        </li>
+        <li>They are in the process of raising a sidecar fund to FASA and are in talks with Livelihood Investment Fund as a potential investor</li>
+      </ul>
+    </li>
+  </ul>
+  <p class="body-text" style="margin-top:12px;">Options on the fund side that have broader geographic coverage include:</p>
+  <ul class="body-list">
+    <li>SIDI
+      <ul>
+        <li>French catholic NGO that provide financial services in the &ldquo;Global South</li>
+        <li>Active in Madagascar with three outstanding loans in 2025</li>
+      </ul>
+    </li>
+    <li>Global Innovation Fund (GIF)
+      <ul>
+        <li>Established by USAID (now defunct) and DFID (now FCDO)</li>
+        <li>GIF Core (the charity) is funded by donor grants</li>
+        <li>GIF Growth is a fund that relies on investment from governments or impact-oriented investors (<a href="https://www.globalinnovation.fund/news/gif-in-the-world/global-innovation-fund-announces-50m-capital-raise-for-gif-growth" target="_blank" rel="noopener">recent funding round announcement</a>). Built to leverage private sector investments and is designed to be self-sustaining long term.</li>
+      </ul>
+    </li>
+  </ul>
+  <p class="body-text" style="margin-top:12px;">We are in active conversations with all of the above.</p>
+</div>
+
 <script>
+function listToText(ul, depth) {
+  var lines = [];
+  Array.prototype.forEach.call(ul.children, function(li) {
+    if (li.tagName !== 'LI') return;
+    var own = '';
+    li.childNodes.forEach(function(n) {
+      if (n.nodeType === 3 || (n.nodeType === 1 && n.tagName !== 'UL')) own += n.textContent;
+    });
+    lines.push('  '.repeat(depth) + '- ' + own.replace(/\s+/g, ' ').trim());
+    Array.prototype.forEach.call(li.children, function(child) {
+      if (child.tagName === 'UL') lines = lines.concat(listToText(child, depth + 1));
+    });
+  });
+  return lines;
+}
+
 function ganttToText(gantt) {
   // Grid column 2 = Oct 2026 ... column 16 = Dec 2027
   var mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -222,13 +289,13 @@ document.getElementById('download-text-link').addEventListener('click', function
   e.preventDefault();
   var blocks = [];
   document.querySelectorAll('.card').forEach(function(card) {
-    card.querySelectorAll('h1, h2, p.caption, p.body-text, ul.body-list, .gantt').forEach(function(el) {
+    card.querySelectorAll('h1, h2, h3, p.caption, p.body-text, ul.body-list, .gantt').forEach(function(el) {
       if (el.tagName === 'H1' || el.tagName === 'H2') {
         blocks.push(el.textContent.trim().toUpperCase());
+      } else if (el.tagName === 'H3') {
+        blocks.push(el.textContent.trim());
       } else if (el.tagName === 'UL') {
-        var items = [];
-        el.querySelectorAll('li').forEach(function(li) { items.push('- ' + li.textContent.trim()); });
-        blocks.push(items.join('\n'));
+        blocks.push(listToText(el, 0).join('\n'));
       } else if (el.classList.contains('gantt')) {
         blocks.push(ganttToText(el));
       } else {
