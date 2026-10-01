@@ -151,6 +151,21 @@
   .process .p5{transition-delay:.65s;} .process .p6{transition-delay:.9s;} .process .p7{transition-delay:.9s;}
   .process .p8{transition-delay:1.15s;} .process .p9{transition-delay:1.4s;} .process .p10{transition-delay:1.5s;}
 
+  /* TA-first nested-circle graphic */
+  .ta-fig{margin:16px 0 0;}
+  .ta-fig svg{display:block;width:100%;max-width:320px;margin:0 auto;}
+  .ta-fig text{font-family:sans-serif;}
+  .ta-fig .ta-title{font-size:14px;font-weight:600;fill:var(--text-primary);}
+  .ta-fig .ta-sub{font-size:12px;fill:var(--text-secondary);}
+  .ta-fig .ta-fin{font-size:13px;font-weight:600;fill:#185FA5;}
+  .ta-fig figcaption{font-size:12px;line-height:1.5;color:var(--text-secondary);text-align:center;max-width:480px;margin:8px auto 0;}
+  /* Entrance animation: only once JS arms it (.ta-armed), so the graphic is fully visible without JS */
+  .ta-armed .ta-big,.ta-armed .ta-small{opacity:0;transition:opacity .4s ease,transform .4s ease;}
+  .ta-armed .ta-big{transform:scale(.92);transform-box:fill-box;transform-origin:center;}
+  .ta-armed .ta-small{transition-delay:.3s;}
+  .ta-armed:not(.ta-play) .ta-big,.ta-armed:not(.ta-play) .ta-small{transition:none;}
+  .ta-armed.ta-play .ta-big,.ta-armed.ta-play .ta-small{opacity:1;transform:none;}
+
   /* Gantt on phones: narrower label column, swipe hint and right-edge fade */
   .gantt-frame{position:relative;}
   .gantt-frame::after{content:"";position:absolute;top:0;right:0;bottom:0;width:36px;pointer-events:none;background:linear-gradient(to right,transparent,var(--surface-1));opacity:0;}
@@ -173,6 +188,7 @@
     .back-btn,.back-btn.show{transition:none;}
     .process-armed .pr-step{opacity:1;transition:none;}
     .process-armed .pr-line{stroke-dashoffset:0;transition:none;}
+    .ta-armed .ta-big,.ta-armed .ta-small{opacity:1;transform:none;transition:none;}
   }
 </style>
 </head>
@@ -335,6 +351,23 @@
 </svg>
   <p class="body-text" style="margin-top:16px;">Our starting assumption is that we will mirror the technical assistance-first approach of Azure. In other words the core activity is the technical assistance provided by Forest Flavors, not the lending. Forest Flavors works with many SMEs and some of them also need financing.</p>
   <p class="body-text">It&#39;s also important to note that the technical assistance provided by Forest Flavors is to strengthen the SME overall not just to help the SME get financing. The goal is not to get 100% of the SMEs that Forest Flavors works with access to financing, but more likely a similar ratio as experienced by Azure (e.g., 300 SMEs receiving technical assistance and 40 receiving loans).</p>
+  <figure class="ta-fig">
+    <svg viewBox="0 0 300 290" role="img" aria-labelledby="ta-title ta-desc">
+      <title id="ta-title">Financing within technical assistance</title>
+      <desc id="ta-desc">A large circle labeled Forest Flavors technical assistance, strengthening the SME overall, contains a smaller circle labeled Financing.</desc>
+      <g class="ta-big">
+        <circle cx="150" cy="145" r="135" fill="#faeeda" stroke="#b7791f" stroke-width="1.5"/>
+        <text class="ta-title" x="128" y="80" text-anchor="middle" dominant-baseline="central">Forest Flavors</text>
+        <text class="ta-title" x="128" y="98" text-anchor="middle" dominant-baseline="central">technical assistance</text>
+        <text class="ta-sub" x="128" y="121" text-anchor="middle" dominant-baseline="central">Strengthening the SME overall</text>
+      </g>
+      <g class="ta-small">
+        <circle cx="205" cy="200" r="49" fill="#e6f1fb" stroke="#185FA5" stroke-width="1.5"/>
+        <text class="ta-fin" x="205" y="200" text-anchor="middle" dominant-baseline="central">Financing</text>
+      </g>
+    </svg>
+    <figcaption>Financing is one component of Forest Flavors&#39; technical assistance, not the core activity. At Azure, about 40 of 300 TA clients received loans.</figcaption>
+  </figure>
 </div>
 
 <div class="card">
@@ -797,6 +830,19 @@ function prefersReducedMotion() {
       jumpFrom(a.closest('p') || a, 'text', document.getElementById(a.getAttribute('href').slice(1)));
     });
   });
+})();
+
+// TA-first graphic: play the entrance once, the first time it scrolls into view.
+(function() {
+  var fig = document.querySelector('.ta-fig');
+  if (!fig || !('IntersectionObserver' in window) || prefersReducedMotion()) return;
+  fig.classList.add('ta-armed');
+  var io = new IntersectionObserver(function(entries) {
+    if (!entries.some(function(e) { return e.isIntersecting; })) return;
+    io.disconnect();
+    fig.classList.add('ta-play');
+  }, { threshold: 0.4 });
+  io.observe(fig);
 })();
 
 // Process graphic: play the entrance once, the first time it scrolls into view.
