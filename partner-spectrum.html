@@ -15,6 +15,7 @@
     --text-secondary:#6b7280;
     --radius:8px;
     --arrow:#6b7280;
+    --today:#c0392b;
   }
   body{
     margin:0;
@@ -132,8 +133,9 @@
 
   /* Today marker (added by script; hidden outside Oct 2026 - Dec 2027) */
   .gantt.has-today .mo{padding-top:18px;}
-  .gantt .today-line{position:absolute;bottom:0;width:0;border-left:1.5px solid var(--text-secondary);margin-left:-0.75px;z-index:-1;pointer-events:none;}
-  .gantt .today-label{position:absolute;z-index:-1;transform:translateX(-50%);font-size:10px;font-weight:600;line-height:14px;color:var(--text-primary);white-space:nowrap;pointer-events:none;}
+  .gantt .today-line{position:absolute;bottom:0;width:1.5px;margin-left:-0.75px;background:repeating-linear-gradient(to bottom,var(--today) 0 4px,transparent 4px 7px);z-index:-1;pointer-events:none;}
+  .gantt .today-label{position:absolute;z-index:-1;margin-left:3px;font-size:10px;font-weight:600;line-height:14px;color:var(--today);white-space:nowrap;pointer-events:none;}
+  .gantt .today-label.flip{margin-left:0;transform:translateX(calc(-100% - 3px));}
 
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
@@ -593,15 +595,18 @@ function prefersReducedMotion() {
   gantt.appendChild(label);
   var wrap = gantt.parentNode, x = 0;
   function clip() {
-    // Hide the marker while it is scrolled underneath the pinned label column
+    // Hide the marker only while the line is scrolled underneath the pinned label column
     var under = x - wrap.scrollLeft < gantt.querySelector('.task').offsetWidth;
     line.style.visibility = label.style.visibility = under ? 'hidden' : '';
   }
   function place() {
-    var mo = gantt.querySelectorAll('.mo')[idx];
-    x = mo.offsetLeft + mo.offsetWidth * frac;
+    var mos = gantt.querySelectorAll('.mo'), mo = mos[idx];
+    // Keep the line clear of the label column's edge (Oct 1 sits right at it)
+    x = Math.max(mo.offsetLeft + mo.offsetWidth * frac, mos[0].offsetLeft + 1);
     label.style.left = x + 'px';
     label.style.top = mo.offsetTop + 'px';
+    // Label sits right of the line; near the far right edge it flips left so it doesn't overflow
+    label.classList.toggle('flip', x + 3 + label.offsetWidth > gantt.offsetWidth);
     line.style.left = x + 'px';
     line.style.top = (mo.offsetTop + 15) + 'px';
     clip();
