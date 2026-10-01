@@ -107,6 +107,34 @@
   .sub-box.flash,.sub-box.flash-static{border-radius:var(--radius);}
   [tabindex="-1"]:focus:not(.flash):not(.flash-static){outline:none;}
 
+  /* Segment / build / finance process graphic */
+  .process{margin:20px 0 4px;}
+  .process svg{display:block;width:100%;margin:0 auto;}
+  .process-h{max-width:560px;}
+  .process-v{max-width:340px;display:none !important;}
+  @media (max-width:599px){ .process-h{display:none !important;} .process-v{display:block !important;} }
+  .process text{font-family:sans-serif;}
+  .process .pr-num{font-size:11px;font-weight:600;fill:var(--text-secondary);}
+  .process .pr-title{font-size:14px;font-weight:500;fill:var(--text-primary);}
+  .process .pr-note{font-size:11px;fill:var(--text-secondary);}
+  .process .pr-brk{font-size:12px;font-weight:500;}
+  .process .pr-arrow{fill:none;stroke:var(--arrow);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+  .process .pr-dash{stroke-dasharray:5 4;stroke-linecap:butt;}
+  .process .pr-bracket{fill:none;stroke-width:1;}
+  /* Entrance animation: only applies once JS arms it (.process-armed), so the graphic is fully visible without JS.
+     The dashed arc fades in, since its dash pattern rules out a dashoffset draw-in. */
+  .process-armed .pr-step{opacity:0;transition:opacity .3s ease;}
+  .process-armed .pr-line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .25s ease;}
+  .process-armed .pr-head{transition-duration:.15s;}
+  .process-armed .pr-arc{transition-duration:.4s;}
+  /* Hide instantly when armed; transitions only run on the way in */
+  .process-armed:not(.process-play) .pr-step,.process-armed:not(.process-play) .pr-line{transition:none;}
+  .process-armed.process-play .pr-step{opacity:1;}
+  .process-armed.process-play .pr-line{stroke-dashoffset:0;}
+  .process .p2{transition-delay:.2s;} .process .p3{transition-delay:.45s;} .process .p4{transition-delay:.45s;}
+  .process .p5{transition-delay:.65s;} .process .p6{transition-delay:.9s;} .process .p7{transition-delay:.9s;}
+  .process .p8{transition-delay:1.15s;} .process .p9{transition-delay:1.4s;} .process .p10{transition-delay:1.5s;}
+
   /* Gantt on phones: narrower label column, swipe hint and right-edge fade */
   .gantt-frame{position:relative;}
   .gantt-frame::after{content:"";position:absolute;top:0;right:0;bottom:0;width:36px;pointer-events:none;background:linear-gradient(to right,transparent,var(--surface-1));opacity:0;}
@@ -126,6 +154,8 @@
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     .tap .box{transition:none;}
+    .process-armed .pr-step{opacity:1;transition:none;}
+    .process-armed .pr-line{stroke-dashoffset:0;transition:none;}
   }
 </style>
 </head>
@@ -297,6 +327,77 @@
     <li>Control versus scale</li>
   </ul>
   <p class="body-text" style="margin-top:12px;">These tensions/trade-offs can be addressed and balanced through a combination approach which would reflect the market-system theme Julie and Shaun discussed, e.g. &ldquo;from projects to systems&rdquo;, &ldquo;moving from direct implementation to a facilitation role&rdquo;.</p>
+  <div class="process">
+    <svg class="process-h" viewBox="0 0 560 146" role="img" aria-labelledby="process-h-title process-h-desc">
+      <title id="process-h-title">Process: segment, build pipeline, finance</title>
+      <desc id="process-h-desc">Three steps in order: 1 Segment SMEs, 2 Build pipeline, 3 Finance SMEs. Segmenting also informs financing directly. Steps 1 and 2 are grant/program funded; step 3 is investment/CSV.</desc>
+      <g class="pr-step p1">
+        <rect x="10" y="50" width="150" height="60" rx="8" fill="#faeeda" stroke="#b7791f" stroke-width="1"/>
+        <text class="pr-num" x="85" y="72" text-anchor="middle" dominant-baseline="central">1</text>
+        <text class="pr-title" x="85" y="90" text-anchor="middle" dominant-baseline="central">Segment SMEs</text>
+      </g>
+      <path class="pr-arrow pr-line p2" pathLength="1" d="M166 80 H199"/>
+      <path class="pr-arrow pr-step pr-head p3" d="M193 75 L199 80 L193 85"/>
+      <g class="pr-step p4">
+        <rect x="205" y="50" width="150" height="60" rx="8" fill="#faeeda" stroke="#b7791f" stroke-width="1"/>
+        <text class="pr-num" x="280" y="72" text-anchor="middle" dominant-baseline="central">2</text>
+        <text class="pr-title" x="280" y="90" text-anchor="middle" dominant-baseline="central">Build pipeline</text>
+      </g>
+      <path class="pr-arrow pr-line p5" pathLength="1" d="M361 80 H394"/>
+      <path class="pr-arrow pr-step pr-head p6" d="M388 75 L394 80 L388 85"/>
+      <g class="pr-step p7">
+        <rect x="400" y="50" width="150" height="60" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="1"/>
+        <text class="pr-num" x="475" y="72" text-anchor="middle" dominant-baseline="central">3</text>
+        <text class="pr-title" x="475" y="90" text-anchor="middle" dominant-baseline="central">Finance SMEs</text>
+      </g>
+      <g class="pr-step pr-arc p8">
+        <path class="pr-arrow pr-dash" d="M85 46 C85 16, 475 16, 475 45"/>
+        <path class="pr-arrow" d="M470 39 L475 45 L480 39"/>
+      </g>
+      <text class="pr-note pr-step p9" x="280" y="12" text-anchor="middle" dominant-baseline="central">also informs financing</text>
+      <g class="pr-step p10">
+        <path class="pr-bracket" stroke="#b7791f" d="M10 116 V122 H355 V116"/>
+        <text class="pr-brk" fill="#b7791f" x="182.5" y="137" text-anchor="middle" dominant-baseline="central">Grant/program funding</text>
+        <path class="pr-bracket" stroke="#185FA5" d="M400 116 V122 H550 V116"/>
+        <text class="pr-brk" fill="#185FA5" x="475" y="137" text-anchor="middle" dominant-baseline="central">Investment/CSV</text>
+      </g>
+    </svg>
+    <svg class="process-v" viewBox="0 0 298 274" role="img" aria-labelledby="process-v-title process-v-desc">
+      <title id="process-v-title">Process: segment, build pipeline, finance</title>
+      <desc id="process-v-desc">Three steps in order: 1 Segment SMEs, 2 Build pipeline, 3 Finance SMEs. Segmenting also informs financing directly. Steps 1 and 2 are grant/program funded; step 3 is investment/CSV.</desc>
+      <g class="pr-step p1">
+        <rect x="54" y="4" width="180" height="64" rx="8" fill="#faeeda" stroke="#b7791f" stroke-width="1"/>
+        <text class="pr-num" x="144" y="26" text-anchor="middle" dominant-baseline="central">1</text>
+        <text class="pr-title" x="144" y="44" text-anchor="middle" dominant-baseline="central">Segment SMEs</text>
+      </g>
+      <path class="pr-arrow pr-line p2" pathLength="1" d="M144 74 V97"/>
+      <path class="pr-arrow pr-step pr-head p3" d="M139 91 L144 97 L149 91"/>
+      <g class="pr-step p4">
+        <rect x="54" y="104" width="180" height="64" rx="8" fill="#faeeda" stroke="#b7791f" stroke-width="1"/>
+        <text class="pr-num" x="144" y="126" text-anchor="middle" dominant-baseline="central">2</text>
+        <text class="pr-title" x="144" y="144" text-anchor="middle" dominant-baseline="central">Build pipeline</text>
+      </g>
+      <path class="pr-arrow pr-line p5" pathLength="1" d="M144 174 V197"/>
+      <path class="pr-arrow pr-step pr-head p6" d="M139 191 L144 197 L149 191"/>
+      <g class="pr-step p7">
+        <rect x="54" y="204" width="180" height="64" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="1"/>
+        <text class="pr-num" x="144" y="226" text-anchor="middle" dominant-baseline="central">3</text>
+        <text class="pr-title" x="144" y="244" text-anchor="middle" dominant-baseline="central">Finance SMEs</text>
+      </g>
+      <g class="pr-step pr-arc p8">
+        <path class="pr-arrow pr-dash" d="M238 36 C282 36, 282 236, 241 236"/>
+        <path class="pr-arrow" d="M247 231 L241 236 L247 241"/>
+      </g>
+      <text class="pr-note pr-step p9" transform="rotate(90 287 136)" x="287" y="136" text-anchor="middle" dominant-baseline="central">also informs financing</text>
+      <g class="pr-step p10">
+        <path class="pr-bracket" stroke="#b7791f" d="M48 4 H42 V168 H48"/>
+        <text class="pr-brk" fill="#b7791f" transform="rotate(-90 28 86)" x="28" y="86" text-anchor="middle" dominant-baseline="central">Grant/program funding</text>
+        <path class="pr-bracket" stroke="#185FA5" d="M48 204 H42 V268 H48"/>
+        <text class="pr-brk" fill="#185FA5" transform="rotate(-90 21 236)" x="21" y="236" text-anchor="middle" dominant-baseline="central">Investment/</text>
+        <text class="pr-brk" fill="#185FA5" transform="rotate(-90 35 236)" x="35" y="236" text-anchor="middle" dominant-baseline="central">CSV</text>
+      </g>
+    </svg>
+  </div>
 </div>
 
 <div class="card">
@@ -602,6 +703,19 @@ function prefersReducedMotion() {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jump(t.getAttribute('data-target')); }
     });
   });
+})();
+
+// Process graphic: play the entrance once, the first time it scrolls into view.
+(function() {
+  var proc = document.querySelector('.process');
+  if (!proc || !('IntersectionObserver' in window) || prefersReducedMotion()) return;
+  proc.classList.add('process-armed');
+  var io = new IntersectionObserver(function(entries) {
+    if (!entries.some(function(e) { return e.isIntersecting; })) return;
+    io.disconnect();
+    proc.classList.add('process-play');
+  }, { threshold: 0.4 });
+  io.observe(proc);
 })();
 </script>
 
