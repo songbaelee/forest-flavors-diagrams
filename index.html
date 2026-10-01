@@ -153,6 +153,15 @@
   }
   .gate-btn:hover{background:var(--border);}
   .gate-error{font-size:12px;color:var(--text-secondary);margin:0;display:none;}
+  /* Floating "Back" button, shown when arriving from partner-spectrum's Reference materials link */
+  .back-btn{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:10;
+    min-height:40px;padding:0 16px;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface-1);
+    color:var(--text-primary);font:inherit;font-size:13px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.12);cursor:pointer;
+    opacity:0;visibility:hidden;transition:opacity .2s ease,visibility 0s linear .2s;}
+  .back-btn.show{opacity:1;visibility:visible;transition:opacity .2s ease,visibility 0s;}
+  .back-btn:hover{background:var(--surface-2);}
+  .back-btn:focus-visible{outline:2px solid #185FA5;outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ .back-btn,.back-btn.show{transition:none;} }
 </style>
 </head>
 <body>
@@ -360,6 +369,8 @@
   </div>
 </div>
 
+<button type="button" class="back-btn" id="back-btn" aria-label="Back to A combination approach">&#8617; Back to A combination approach</button>
+
 <script>
 (function(){
   var PASSWORD = "crs";
@@ -374,7 +385,22 @@
     gateForm.style.display = 'none';
     content.style.display = 'block';
     scrollToHash();
+    showBack();
   }
+
+  // Back button: only when the visit came from partner-spectrum's "Reference materials" link
+  var backBtn = document.getElementById('back-btn');
+  function showBack(){
+    if (new URLSearchParams(location.search).get('from') === 'partner-spectrum') backBtn.classList.add('show');
+  }
+  backBtn.addEventListener('click', function(){
+    // history.back() restores the exact scroll position; otherwise open the Considerations section
+    if (document.referrer.indexOf('partner-spectrum.html') !== -1 && history.length > 1) history.back();
+    else location.href = 'partner-spectrum.html#considerations';
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') backBtn.classList.remove('show');
+  });
 
   // The content is hidden until unlock, so the browser's own #hash jump lands at the top.
   // Once it is shown, scroll the hash target into view (and briefly highlight it).
