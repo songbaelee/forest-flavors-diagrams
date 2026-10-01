@@ -103,24 +103,6 @@
   .card.flash-static{box-shadow:0 1px 3px rgba(0,0,0,0.06);border-radius:12px;}
   [tabindex="-1"]:focus{outline:none;}
 
-  /* Combination approach flow graphic */
-  .flow{margin:16px 0 4px;}
-  .flow svg{display:block;width:100%;margin:0 auto;}
-  .flow-h{max-width:560px;}
-  .flow-v{max-width:320px;display:none !important;}
-  @media (max-width:599px){ .flow-h{display:none !important;} .flow-v{display:block !important;} }
-  .flow .fl-title{font-family:sans-serif;font-size:14px;font-weight:500;fill:var(--text-primary);}
-  .flow .fl-sub{font-family:sans-serif;font-size:12px;fill:var(--text-secondary);}
-  .flow .fl-arrow{fill:none;stroke:var(--arrow);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-  /* Entrance animation: only applies once JS arms it (.flow-armed), so the graphic is fully visible without JS */
-  .flow-armed .fl-step{opacity:0;transition:opacity .3s ease;}
-  .flow-armed .fl-line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .3s ease;}
-  .flow-armed .fl-head{transition-duration:.15s;}
-  .flow-armed.flow-play .fl-step{opacity:1;}
-  .flow-armed.flow-play .fl-line{stroke-dashoffset:0;}
-  .flow .d2{transition-delay:.25s;} .flow .d3{transition-delay:.5s;} .flow .d4{transition-delay:.45s;}
-  .flow .d5{transition-delay:.7s;} .flow .d6{transition-delay:.95s;} .flow .d7{transition-delay:.9s;}
-
   /* Gantt on phones: narrower label column, swipe hint and right-edge fade */
   .gantt-frame{position:relative;}
   .gantt-frame::after{content:"";position:absolute;top:0;right:0;bottom:0;width:36px;pointer-events:none;background:linear-gradient(to right,transparent,var(--surface-1));opacity:0;}
@@ -140,8 +122,6 @@
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     .tap .box{transition:none;}
-    .flow-armed .fl-step{opacity:1;transition:none;}
-    .flow-armed .fl-line{stroke-dashoffset:0;transition:none;}
   }
 </style>
 </head>
@@ -305,80 +285,35 @@
 </div>
 
 <div class="card">
+  <h2>Three tensions to balance</h2>
   <p class="body-text">We want to mobilize capital to support our existing programming but we also want to take a systems approach. The focus is on capital that can be deployed from social ventures (i.e., repaid) but grant capital can strengthen our approach.</p>
   <ul class="body-list">
     <li>Programs versus systems</li>
     <li>Grants versus investment</li>
     <li>Control versus scale</li>
   </ul>
-  <p class="body-text" style="margin-top:12px;">These tensions/trade-offs can be addressed and balanced through a combination approach which would reflect the market-system theme Julie and Shaun discussed, e.g. &ldquo;from projects to systems&rdquo;, &ldquo;moving from direct implementation to a facilitation role&rdquo;. One such option to consider could be:</p>
+  <p class="body-text" style="margin-top:12px;">These tensions/trade-offs can be addressed and balanced through a combination approach which would reflect the market-system theme Julie and Shaun discussed, e.g. &ldquo;from projects to systems&rdquo;, &ldquo;moving from direct implementation to a facilitation role&rdquo;.</p>
+</div>
+
+<div class="card">
+  <h2>One option: Vula, Miarakap and Aceli</h2>
+  <p class="body-text">One such option to consider could be:</p>
   <ul class="body-list">
     <li>Vula is an AI-powered matchmaking platform for SMEs in Africa.</li>
     <li>Miarakap is a fund manager and advisor in Madagascar that CRS has worked with in the past.</li>
     <li>Aceli, a grant-based incentive activity, is raising a new wholesale debt facility in Uganda.</li>
   </ul>
-  <div class="flow">
-    <svg class="flow-h" viewBox="0 0 560 84" role="img" aria-labelledby="flow-h-title flow-h-desc">
-      <title id="flow-h-title">Combination approach</title>
-      <desc id="flow-h-desc">Combination approach: Vula segments SMEs, Miarakap builds the pipeline, and Aceli's lending partners finance them.</desc>
-      <g class="fl-step d1">
-        <rect x="10" y="10" width="150" height="64" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="1"/>
-        <text class="fl-title" x="85" y="34" text-anchor="middle" dominant-baseline="central">Vula</text>
-        <text class="fl-sub" x="85" y="54" text-anchor="middle" dominant-baseline="central">Segment SMEs</text>
-      </g>
-      <path class="fl-arrow fl-line d2" pathLength="1" d="M166 42 H199"/>
-      <path class="fl-arrow fl-step fl-head d3" d="M193 37 L199 42 L193 47"/>
-      <g class="fl-step d4">
-        <rect x="205" y="10" width="150" height="64" rx="8" fill="#faeeda" stroke="#b7791f" stroke-width="1"/>
-        <text class="fl-title" x="280" y="34" text-anchor="middle" dominant-baseline="central">Miarakap</text>
-        <text class="fl-sub" x="280" y="54" text-anchor="middle" dominant-baseline="central">Build pipeline</text>
-      </g>
-      <path class="fl-arrow fl-line d5" pathLength="1" d="M361 42 H394"/>
-      <path class="fl-arrow fl-step fl-head d6" d="M388 37 L394 42 L388 47"/>
-      <g class="fl-step d7">
-        <rect x="400" y="10" width="150" height="64" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="1"/>
-        <text class="fl-title" x="475" y="34" text-anchor="middle" dominant-baseline="central">Aceli's lenders</text>
-        <text class="fl-sub" x="475" y="54" text-anchor="middle" dominant-baseline="central">Finance SMEs</text>
-      </g>
-    </svg>
-    <svg class="flow-v" viewBox="0 0 300 244" role="img" aria-labelledby="flow-v-title flow-v-desc">
-      <title id="flow-v-title">Combination approach</title>
-      <desc id="flow-v-desc">Combination approach: Vula segments SMEs, Miarakap builds the pipeline, and Aceli's lending partners finance them.</desc>
-      <g class="fl-step d1">
-        <rect x="40" y="4" width="220" height="56" rx="8" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="1"/>
-        <text class="fl-title" x="150" y="24" text-anchor="middle" dominant-baseline="central">Vula</text>
-        <text class="fl-sub" x="150" y="43" text-anchor="middle" dominant-baseline="central">Segment SMEs</text>
-      </g>
-      <path class="fl-arrow fl-line d2" pathLength="1" d="M150 66 V87"/>
-      <path class="fl-arrow fl-step fl-head d3" d="M145 81 L150 87 L155 81"/>
-      <g class="fl-step d4">
-        <rect x="40" y="94" width="220" height="56" rx="8" fill="#faeeda" stroke="#b7791f" stroke-width="1"/>
-        <text class="fl-title" x="150" y="114" text-anchor="middle" dominant-baseline="central">Miarakap</text>
-        <text class="fl-sub" x="150" y="133" text-anchor="middle" dominant-baseline="central">Build pipeline</text>
-      </g>
-      <path class="fl-arrow fl-line d5" pathLength="1" d="M150 156 V177"/>
-      <path class="fl-arrow fl-step fl-head d6" d="M145 171 L150 177 L155 171"/>
-      <g class="fl-step d7">
-        <rect x="40" y="184" width="220" height="56" rx="8" fill="#e6f1fb" stroke="#185FA5" stroke-width="1"/>
-        <text class="fl-title" x="150" y="204" text-anchor="middle" dominant-baseline="central">Aceli's lenders</text>
-        <text class="fl-sub" x="150" y="223" text-anchor="middle" dominant-baseline="central">Finance SMEs</text>
-      </g>
-    </svg>
-  </div>
-</div>
-
-<div class="card">
-  <h2>Grant/program funding</h2>
+  <h3>Grant/program funding</h3>
   <p class="body-text" id="vula-text">Vula is something that Jim is already in the process of contracting at the country/project level. This would be paid out of the programming budget as a pilot. It will provide CRS with segmentation data of the SMEs we work with and funding opportunities that best match their needs.</p>
   <p class="body-text" id="miarakap-text">The envisioned relationship with Miarakap would mirror our past work with them when we were exploring an expansion of Isidro into East Africa. We would pay them to develop a pipeline that would include SMEs that CRS already works with, plus additional SMEs that we would jointly identify. The difference, though, would be that instead of building that pipeline for one specific funding opportunity (i.e., Isidro), we would market those SMEs to all existing capital providers in the ecosystem.</p>
-</div>
-
-<div class="card" id="aceli-section">
-  <h2>Investment/CSV opportunity</h2>
+  <div id="aceli-section">
+  <h3>Investment/CSV opportunity</h3>
   <p class="body-text">The new fund being raised by Aceli would typically fall in the fourth category (indirect), we placed it in the aligned category for several reasons.</p>
   <p class="body-text">First, Aceli is a marketplace approach. They currently work with 19 lending partners in Uganda, which span tier 1, 2, and 3 commercial banks, savings and credit cooperatives, and non-bank financial institutions. The SMEs that CRS works with are at different stages and have different needs, which cannot be served by one lending partner. Their focus on working with banks also sets them apart.</p>
-  <p class="body-text">Second, Aceli's existing BDS technical assistance complements the type of technical assistance CRS typically provides, e.g., agroforestry, farmer training.</p>
+  <p class="body-text">Second, Aceli's existing BDS technical assistance complements the type of technical assistance (TA) CRS typically provides, e.g., agroforestry, farmer training. There will be opportunities for coordinating two-way referrals for TA.</p>
   <p class="body-text">Third, their existing portfolio has already demonstrated overlap with CRS supported SMEs. Four SMEs that CRS works with in Uganda have already accessed financing through Aceli lending partners (worth over $1 million) and one has already benefited from their TA program. These results are roughly equivalent results to Isidro with no effort or cost from our side. The numbers would naturally increase with a directed and coordinated effort.</p>
+  <p class="body-text">The Aceli debt facility would offer CRS a financial return of 2% to start, possibly 3-4% in the future. Balloon Ventures is a current partner / beneficiary of existing incentives and potential beneficiary of capital through the wholesale facility (Pearl Capital could be a partner in the future).</p>
+  </div>
 </div>
 
 <div class="card">
@@ -661,19 +596,6 @@ function prefersReducedMotion() {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jump(t.getAttribute('data-target')); }
     });
   });
-})();
-
-// Flow graphic: play the entrance once, the first time it scrolls into view.
-(function() {
-  var flow = document.querySelector('.flow');
-  if (!flow || !('IntersectionObserver' in window) || prefersReducedMotion()) return;
-  flow.classList.add('flow-armed');
-  var io = new IntersectionObserver(function(entries) {
-    if (!entries.some(function(e) { return e.isIntersecting; })) return;
-    io.disconnect();
-    flow.classList.add('flow-play');
-  }, { threshold: 0.4 });
-  io.observe(flow);
 })();
 </script>
 
