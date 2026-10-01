@@ -80,6 +80,12 @@
   .travel-note{margin-top:16px;padding:14px 16px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);}
   .travel-note h3{margin:0 0 6px;}
   .travel-note a{color:#185FA5;}
+  /* Color-coded funding subsections (match the Gantt bar colors) */
+  .sub-box{margin-top:16px;padding:14px 16px;border:1px solid;border-radius:var(--radius);}
+  .sub-box h3{margin:0 0 6px;}
+  .sub-box > :last-child{margin-bottom:0;}
+  .sub-grant{background:#faeeda;border-color:#b7791f;}
+  .sub-invest{background:#e6f1fb;border-color:#185FA5;}
   h3.diagram-label{font-size:12px;font-weight:600;color:var(--text-secondary);margin:20px 0 4px;}
 
   /* Spectrum diagram: horizontal version from 600px up, vertical version below */
@@ -95,13 +101,11 @@
   .tap .cue{font-family:sans-serif;font-size:10px;fill:var(--text-secondary);}
 
   /* Highlight for the passage a diagram box jumps to */
-  @keyframes flash-bg{0%,40%{background-color:#e6f1fb;box-shadow:0 0 0 6px #e6f1fb;}100%{background-color:transparent;box-shadow:0 0 0 6px transparent;}}
-  @keyframes flash-card{0%,40%{background-color:#e6f1fb;}100%{background-color:var(--surface-1);}}
-  .flash{animation:flash-bg 1.5s ease-out;border-radius:4px;}
-  .card.flash{animation-name:flash-card;border-radius:12px;}
-  .flash-static{background-color:#e6f1fb;box-shadow:0 0 0 6px #e6f1fb;border-radius:4px;}
-  .card.flash-static{box-shadow:0 1px 3px rgba(0,0,0,0.06);border-radius:12px;}
-  [tabindex="-1"]:focus{outline:none;}
+  @keyframes flash-outline{0%,40%{outline-color:#185FA5;}100%{outline-color:transparent;}}
+  .flash,.flash-static{outline:2px solid #185FA5;outline-offset:4px;border-radius:4px;}
+  .flash{animation:flash-outline 1.5s ease-out forwards;}
+  .sub-box.flash,.sub-box.flash-static{border-radius:var(--radius);}
+  [tabindex="-1"]:focus:not(.flash):not(.flash-static){outline:none;}
 
   /* Gantt on phones: narrower label column, swipe hint and right-edge fade */
   .gantt-frame{position:relative;}
@@ -303,10 +307,12 @@
     <li>Miarakap is a fund manager and advisor in Madagascar that CRS has worked with in the past.</li>
     <li>Aceli, a grant-based incentive activity, is raising a new wholesale debt facility in Uganda.</li>
   </ul>
+  <div class="sub-box sub-grant" id="grant-section">
   <h3>Grant/program funding</h3>
   <p class="body-text" id="vula-text">Vula is something that Jim is already in the process of contracting at the country/project level. This would be paid out of the programming budget as a pilot. It will provide CRS with segmentation data of the SMEs we work with and funding opportunities that best match their needs.</p>
   <p class="body-text" id="miarakap-text">The envisioned relationship with Miarakap would mirror our past work with them when we were exploring an expansion of Isidro into East Africa. We would pay them to develop a pipeline that would include SMEs that CRS already works with, plus additional SMEs that we would jointly identify. The difference, though, would be that instead of building that pipeline for one specific funding opportunity (i.e., Isidro), we would market those SMEs to all existing capital providers in the ecosystem.</p>
-  <div id="aceli-section">
+  </div>
+  <div class="sub-box sub-invest" id="aceli-section">
   <h3>Investment/CSV opportunity</h3>
   <p class="body-text">The new fund being raised by Aceli would typically fall in the fourth category (indirect), we placed it in the aligned category for several reasons.</p>
   <p class="body-text">First, Aceli is a marketplace approach. They currently work with 19 lending partners in Uganda, which span tier 1, 2, and 3 commercial banks, savings and credit cooperatives, and non-bank financial institutions. The SMEs that CRS works with are at different stages and have different needs, which cannot be served by one lending partner. Their focus on working with banks also sets them apart.</p>
