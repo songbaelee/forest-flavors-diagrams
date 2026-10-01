@@ -84,6 +84,8 @@
   .sub-box{margin-top:16px;padding:14px 16px;border:1px solid;border-radius:var(--radius);}
   .sub-box h3{margin:0 0 6px;}
   .sub-box > :last-child{margin-bottom:0;}
+  .sub-box + p.body-text{margin-top:16px;}
+  p.body-text a{color:#185FA5;}
   .sub-grant{background:#faeeda;border-color:#b7791f;}
   .sub-invest{background:#e6f1fb;border-color:#185FA5;}
   h3.diagram-label{font-size:12px;font-weight:600;color:var(--text-secondary);margin:20px 0 4px;}
@@ -106,6 +108,20 @@
   .flash{animation:flash-outline 1.5s ease-out forwards;}
   .sub-box.flash,.sub-box.flash-static{border-radius:var(--radius);}
   [tabindex="-1"]:focus:not(.flash):not(.flash-static){outline:none;}
+  /* A diagram box shows the highlight on its focus ring rather than as an outline */
+  @keyframes flash-ring{0%,40%{opacity:1;}100%{opacity:0;}}
+  .tap.flash,.tap.flash-static{outline:none;}
+  .tap.flash .ring{animation:flash-ring 1.5s ease-out forwards;}
+  .tap.flash-static .ring{opacity:1;}
+
+  /* Floating "Back" button shown after a jump */
+  .back-btn{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:10;
+    min-height:40px;padding:0 16px;border:1px solid var(--border-strong);border-radius:999px;background:var(--surface-1);
+    color:var(--text-primary);font:inherit;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,0.12);cursor:pointer;
+    opacity:0;visibility:hidden;transition:opacity .2s ease,visibility 0s linear .2s;}
+  .back-btn.show{opacity:1;visibility:visible;transition:opacity .2s ease,visibility 0s;}
+  .back-btn:hover{background:var(--surface-2);}
+  .back-btn:focus-visible{outline:2px solid #185FA5;outline-offset:2px;}
 
   /* Segment / build / finance process graphic */
   .process{margin:20px 0 4px;}
@@ -154,6 +170,7 @@
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     .tap .box{transition:none;}
+    .back-btn,.back-btn.show{transition:none;}
     .process-armed .pr-step{opacity:1;transition:none;}
     .process-armed .pr-line{stroke-dashoffset:0;transition:none;}
   }
@@ -421,6 +438,7 @@
   <p class="body-text">Third, their existing portfolio has already demonstrated overlap with CRS supported SMEs. Four SMEs that CRS works with in Uganda have already accessed financing through Aceli lending partners (worth over $1 million) and one has already benefited from their TA program. These results are roughly equivalent results to Isidro with no effort or cost from our side. The numbers would naturally increase with a directed and coordinated effort.</p>
   <p class="body-text">The Aceli debt facility would offer CRS a financial return of 2% to start, possibly 3-4% in the future. Balloon Ventures is a current partner / beneficiary of existing incentives and potential beneficiary of capital through the wholesale facility (Pearl Capital could be a partner in the future).</p>
   </div>
+  <p class="body-text">One drawback of this approach is that Aceli is in Uganda and Miarakap is in Madagascar. We focused on those two initial partners because of the strength of our relationships but <a href="#regional-options" class="jump-link">other options are listed below</a> that would enable geographic overlap from the start, e.g. I&amp;P.</p>
 </div>
 
 <div class="card">
@@ -472,7 +490,7 @@
   <h3>Miarakap</h3>
   <p class="body-text">While the initial focus of our work with Miarakap would be marketing the identified pipeline to other lenders, Social Ventures could always provide investment capital for Miarakap to manage on our behalf to make loans to SMEs that we think are highly impactful but are not able to access financing from other sources.</p>
 
-  <h3>Single-country versus regional approach</h3>
+  <h3 id="regional-options">Single-country versus regional approach</h3>
   <p class="body-text">Our suggestion to start with Miarakap is because of our existing relationship with them and the strength of our programming there but their work is limited to only Madagascar.</p>
   <p class="body-text">Similarly while Aceli hopes to expand their wholesale model to other countries, currently they are starting only in Uganda. Other Uganda-focused lenders include Balloon Ventures and Pearl Capital</p>
   <p class="body-text">Other options for partners on the advisory side that have broader geographic coverage include:</p>
@@ -519,6 +537,8 @@
   </ul>
   <p class="body-text" style="margin-top:12px;">We are in active conversations with all of the above.</p>
 </div>
+
+<button type="button" class="back-btn" id="back-btn" aria-label="Back to diagram">&uarr; Back to diagram</button>
 
 <script>
 // Text of a node, with external links rendered as "link text (URL)"
@@ -680,27 +700,96 @@ function prefersReducedMotion() {
   update();
 })();
 
-// Tappable diagram boxes: scroll to the related passage and briefly highlight it.
+// Tap-to-jump: diagram boxes and in-text jump links scroll to a passage and briefly highlight it.
+// Each jump remembers its origin, and a floating Back button returns there.
 (function() {
-  function jump(id) {
-    var el = document.getElementById(id);
-    if (!el) return;
+  var btn = document.getElementById('back-btn');
+  var origin = null;  // { el, kind: 'diagram' | 'text', y, left }
+
+  function highlight(el) {
     var reduce = prefersReducedMotion();
-    var top = el.getBoundingClientRect().top + window.pageYOffset - 24;
-    window.scrollTo({ top: Math.max(0, top), behavior: reduce ? 'auto' : 'smooth' });
     if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
     el.focus({ preventScroll: true });
     var cls = reduce ? 'flash-static' : 'flash';
     el.classList.remove('flash', 'flash-static');
-    void el.offsetWidth;  // restart the animation if it is already running
+    void el.getBoundingClientRect();  // restart the animation if it is already running
     el.classList.add(cls);
     clearTimeout(el._flashTimer);
     el._flashTimer = setTimeout(function() { el.classList.remove(cls); }, 1500);
   }
+  function scrollToY(top) {
+    window.scrollTo({ top: Math.max(0, top), behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+  }
+  function jumpTo(el) {
+    scrollToY(el.getBoundingClientRect().top + window.pageYOffset - 24);
+    highlight(el);
+  }
+
+  function showBack(kind) {
+    var label = kind === 'diagram' ? 'Back to diagram' : 'Back';
+    btn.innerHTML = '&uarr; ' + label;
+    btn.setAttribute('aria-label', label);
+    btn.classList.add('show');
+  }
+  function hideBack() {
+    btn.classList.remove('show');
+    origin = null;
+  }
+
+  function jumpFrom(source, kind, target) {
+    if (!target) return;
+    origin = { el: source, kind: kind, y: window.pageYOffset, left: false };
+    jumpTo(target);
+    showBack(kind);
+  }
+
+  btn.addEventListener('click', function() {
+    if (!origin) return hideBack();
+    var o = origin, el = o.el;
+    if (o.kind === 'diagram') {
+      // Use the box in whichever diagram version is currently shown
+      if (!el.getBoundingClientRect().width) {
+        var alt = null;
+        document.querySelectorAll('.tap[data-target="' + el.getAttribute('data-target') + '"]').forEach(function(t) {
+          if (t.getBoundingClientRect().width) alt = t;
+        });
+        el = alt || el;
+      }
+      var svg = el.ownerSVGElement, sr = svg.getBoundingClientRect(), br = el.getBoundingClientRect();
+      // Whole diagram in view if it fits, otherwise center the originating box
+      var top = sr.height + 48 <= window.innerHeight
+        ? sr.top + window.pageYOffset - 24
+        : br.top + window.pageYOffset - (window.innerHeight - br.height) / 2;
+      scrollToY(top);
+      highlight(el);
+    } else {
+      jumpTo(el);
+    }
+    hideBack();
+  });
+
+  // Hide when the reader scrolls back near the origin by hand (only after first leaving it)
+  window.addEventListener('scroll', function() {
+    if (!origin) return;
+    var near = Math.abs(window.pageYOffset - origin.y) < 100;
+    if (!near) origin.left = true;
+    else if (origin.left) hideBack();
+  }, { passive: true });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && origin) hideBack();
+  });
+
   document.querySelectorAll('.tap').forEach(function(t) {
-    t.addEventListener('click', function() { jump(t.getAttribute('data-target')); });
+    function go() { jumpFrom(t, 'diagram', document.getElementById(t.getAttribute('data-target'))); }
+    t.addEventListener('click', go);
     t.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jump(t.getAttribute('data-target')); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+    });
+  });
+  document.querySelectorAll('a.jump-link').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      jumpFrom(a.closest('p') || a, 'text', document.getElementById(a.getAttribute('href').slice(1)));
     });
   });
 })();
