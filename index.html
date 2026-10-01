@@ -116,6 +116,9 @@
   .ref-item .ref-arrow{color:var(--text-secondary);font-size:13px;flex:none;}
 
   #gated-content{display:none;}
+  /* Brief highlight on the section a #hash link lands on (matches partner-spectrum's jump highlight) */
+  @keyframes hash-flash{0%,40%{outline-color:#185FA5;}100%{outline-color:transparent;}}
+  .hash-flash{outline:2px solid #185FA5;outline-offset:4px;border-radius:4px;animation:hash-flash 1.5s ease-out forwards;}
   #gate-form{
     display:flex;
     flex-direction:column;
@@ -303,7 +306,7 @@
   <p class="group-label">Reference materials</p>
   <p class="group-sub">SharePoint links &mdash; CRS login required</p>
 
-  <p class="subgroup-label">Concept notes</p>
+  <p class="subgroup-label" id="concept-notes">Concept notes</p>
   <div class="ref-list">
     <a class="ref-item" href="https://crsorg.sharepoint.com/:b:/s/TM-SPICES-Global-Expansion/IQDgvLcVUyGbQ6xRyWNHF-NUAbwdlsRjoQ_-BRxR1e8SZzA?e=a2AIZf" target="_blank" rel="noopener">
       <span class="ref-title">Aceli &mdash; Agri Market Catalyst (AMC) debt swap deck (September 2026)</span>
@@ -370,6 +373,22 @@
     sessionStorage.setItem('ff_unlocked', 'true');
     gateForm.style.display = 'none';
     content.style.display = 'block';
+    scrollToHash();
+  }
+
+  // The content is hidden until unlock, so the browser's own #hash jump lands at the top.
+  // Once it is shown, scroll the hash target into view (and briefly highlight it).
+  function scrollToHash(){
+    var el = null;
+    try { el = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (e) {}
+    if (!el) return;
+    requestAnimationFrame(function(){
+      var top = el.getBoundingClientRect().top + window.pageYOffset - 24;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      el.classList.add('hash-flash');
+      setTimeout(function(){ el.classList.remove('hash-flash'); }, 1500);
+    });
   }
 
   if (sessionStorage.getItem('ff_unlocked') === 'true') {
